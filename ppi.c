@@ -310,11 +310,6 @@ void shkset2d_iib(GridS *pGrid)
     for (i=1; i<=nghost; i++) { /* Do NOT Change this loop ordering! */
       for (j=jl; j<=ju; j++) {
 	pGrid->U  [k][j][is-i] = pGrid->U  [k][j-r2][is-i+r1];
-#ifdef MHD
-	pGrid->B1i[k][j][is-i] = pGrid->B1i[k][j-r2][is-i+r1];
-	pGrid->B2i[k][j][is-i] = pGrid->B2i[k][j-r2][is-i+r1];
-	pGrid->B3i[k][j][is-i] = pGrid->B3i[k][j-r2][is-i+r1];
-#endif
       }
     }
   }
@@ -354,11 +349,6 @@ void shkset2d_oib(GridS *pGrid)
     for (i=1; i<=nghost; i++) { /* Do NOT Change this loop ordering! */
       for (j=jl; j<=ju; j++) {
 	pGrid->U[k][j][ie+i] = pGrid->U[k][j+r2][ie+i-r1];
-#ifdef MHD
-	if(i>1) pGrid->B1i[k][j][ie+i] = pGrid->B1i[k][j+r2][ie+i-r1];
-	pGrid->B2i[k][j][ie+i] = pGrid->B2i[k][j+r2][ie+i-r1];
-	pGrid->B3i[k][j][ie+i] = pGrid->B3i[k][j+r2][ie+i-r1];
-#endif
       }
     }
   }
@@ -391,11 +381,6 @@ void shkset2d_ijb(GridS *pGrid)
     for (j=1; j<=nghost; j++) {
       for (i=il; i<=iu; i++) {
 	pGrid->U  [k][js-j][i] = pGrid->U  [k][js-j+r2][i-r1];
-#ifdef MHD
-	pGrid->B1i[k][js-j][i] = pGrid->B1i[k][js-j+r2][i-r1];
-	pGrid->B2i[k][js-j][i] = pGrid->B2i[k][js-j+r2][i-r1];
-	pGrid->B3i[k][js-j][i] = pGrid->B3i[k][js-j+r2][i-r1];
-#endif
       }
     }
   }
@@ -430,11 +415,6 @@ void shkset2d_ojb(GridS *pGrid)
     for (j=1; j<=nghost; j++) {
       for (i=il; i<=iu; i++) {
 	pGrid->U[k][je+j][i] = pGrid->U[k][je+j-r2][i+r1];
-#ifdef MHD
-	pGrid->B1i[k][je+j][i] = pGrid->B1i[k][je+j-r2][i+r1];
-	if(j>1) pGrid->B2i[k][je+j][i] = pGrid->B2i[k][je+j-r2][i+r1];
-	pGrid->B3i[k][je+j][i] = pGrid->B3i[k][je+j-r2][i+r1];
-#endif
       }
     }
   }
