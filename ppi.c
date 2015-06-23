@@ -35,61 +35,39 @@ void problem(DomainS *pDomain)
   int i, is = pGrid->is, ie = pGrid->ie;
   int j, js = pGrid->js, je = pGrid->je;
   int k, ks = pGrid->ks, ke = pGrid->ke;
-  int kl,ku,irefine,ir,ix1,ix2,nx1,nx2,nx3,gcd;
-  Real sin_a2, cos_a2, sin_a3, cos_a3;
+  int kl,ku,irefine,ir,ix1,ix2;
 
-  Real tlim;
-  int err_test;
   Real x1,x2,x3,r,xs,xc,xf,xh,vs,vc,vf,vh;
   Real xfp,xrp,xsp,xsm,xrm,xfm,vfp,vrp,vsp,vsm,vrm,vfm;
   Real d0,v0,Mx,My,Mz,E0,r0;
 
-  Real rootdx1, rootdx2;
-  Prim1DS Wl, Wr;//Vector of primitives (left and right states)
-  Cons1DS Ul, Ur;//Vector of Conservatives 
-  ConsS ql, qr;//Not too sure what this is? 
-  Real Bxl=0.0,Bxr=0.0;
-  div_t id;   /* structure containing remainder and quotient */
+  Prim1DS  W;//Vector of primitives (left and right states)
+  Cons1DS  U;//Vector of Conservatives 
+  ConsS  q;//Not too sure what this is? 
 
 /* Following are used to compute volume of cell crossed by initial interface
  * that is assigned to left/right states */
-  int dll, dlr, drr, drl;
-  Real afl_lx, afr_lx, afl_rx, afr_rx;
-  Real afl_ly, afr_ly, afl_ry, afr_ry;
-  Real vfl, vfr, B1r, B2r;
+/* int dll, dlr, drr, drl;
+ * Real afl_lx, afr_lx, afl_rx, afr_rx;
+ * Real afl_ly, afr_ly, afl_ry, afr_ry;
+ * Real vfl, vfr, B1r, B2r; */
+  Real vf;
 
-/* Parse left state read from input file: dl,pl,ul,vl,wl,bxl,byl,bzl */
+// Reading values from input file: d,p,v1,v2,v3
 
-  Wl.d = par_getd("problem","dl");
-  Wl.P = par_getd("problem","pl"); //Adiabatic
-  Wl.Vx = par_getd("problem","v1l");
-  Wl.Vy = par_getd("problem","v2l");
-  Wl.Vz = par_getd("problem","v3l");
+  W.d = par_getd("problem","d");
+  W.P = par_getd("problem","p");
+  W.Vx = par_getd("problem","v1");
+  W.Vy = par_getd("problem","v2");
+  W.Vz = par_getd("problem","v3");
 
-/* Parse right state read from input file: dr,pr,ur,vr,wr,bxr,byr,bzr */
+  U = Prim1D_to_Cons1D(&W);
 
-  Wr.d = par_getd("problem","dr");
-  Wr.P = par_getd("problem","pr");
-  Wr.Vx = par_getd("problem","v1r");
-  Wr.Vy = par_getd("problem","v2r");
-  Wr.Vz = par_getd("problem","v3r");
-
-  Ul = Prim1D_to_Cons1D(&Wl);
-  Ur = Prim1D_to_Cons1D(&Wr);
-
-/* Initialize ql rotated to the (x1,x2,x3) coordinate system */
-  ql.d   = Ul.d;
-  ql.M1  = Ul.Mx*cos_a3 - Ul.My*sin_a3;
-  ql.M2  = Ul.Mx*sin_a3 + Ul.My*cos_a3;
-  ql.M3  = Ul.Mz;
-  ql.E   = Ul.E;
-
-/* Initialize qr rotated to the (x1,x2,x3) coordinate system */
-  qr.d   = Ur.d;
-  qr.M1  = Ur.Mx*cos_a3 - Ur.My*sin_a3;
-  qr.M2  = Ur.Mx*sin_a3 + Ur.My*cos_a3;
-  qr.M3  = Ur.Mz;
-  qr.E   = Ur.E;
+  q.d   = U.d;
+  q.M1  = U.Mx;
+  q.M2  = U.My;
+  q.M3  = U.Mz;
+  q.E   = U.E;
 
 /* Initialize the grid */
 
@@ -99,11 +77,11 @@ void problem(DomainS *pDomain)
       for (i=0; i<=ie+nghost; i++) {
 	ix1 = i + pGrid->Disp[0];
 	 /* Initialize the volume averaged quantities */
-	  pGrid->U[k][j][i].d  = vfl*ql.d + vfr*qr.d;
-	  pGrid->U[k][j][i].M1 = vfl*ql.M1 + vfr*qr.M1;
-	  pGrid->U[k][j][i].M2 = vfl*ql.M2 + vfr*qr.M2;
-	  pGrid->U[k][j][i].M3 = vfl*ql.M3 + vfr*qr.M3;
-	  pGrid->U[k][j][i].E  = vfl*ql.E + vfr*qr.E;
+	  pGrid->U[k][j][i].d  = vf*q.d;
+	  pGrid->U[k][j][i].M1 = vf*q.M1;
+	  pGrid->U[k][j][i].M2 = vf*q.M2;
+	  pGrid->U[k][j][i].M3 = vf*q.M3;
+	  pGrid->U[k][j][i].E  = vf*q.E;
 	}
       }
     }
