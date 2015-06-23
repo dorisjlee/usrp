@@ -52,9 +52,10 @@ void problem(DomainS *pDomain)
  * Real afl_ly, afr_ly, afl_ry, afr_ry;
  * Real vfl, vfr, B1r, B2r; */
   Real vf;
+  //Let the total volume be 1.0 for now (Boundary not determined)
+  vf=1.0;
 
-// Reading values from input file: d,p,v1,v2,v3
-
+  // Reading values from input file: d,p,v1,v2,v3
   W.d = par_getd("problem","d");
   W.P = par_getd("problem","p");
   W.Vx = par_getd("problem","v1");
@@ -69,14 +70,12 @@ void problem(DomainS *pDomain)
   q.M3  = U.Mz;
   q.E   = U.E;
 
-/* Initialize the grid */
-
+  //Initializes the 2D grid (k not really considered here?)
   for (k=kl; k<=ku; k++) {
     for (j=0; j<=je+nghost; j++) {
       ix2 = j + pGrid->Disp[1];
       for (i=0; i<=ie+nghost; i++) {
-	ix1 = i + pGrid->Disp[0];
-	 /* Initialize the volume averaged quantities */
+	  ix1 = i + pGrid->Disp[0];
 	  pGrid->U[k][j][i].d  = vf*q.d;
 	  pGrid->U[k][j][i].M1 = vf*q.M1;
 	  pGrid->U[k][j][i].M2 = vf*q.M2;
