@@ -10,14 +10,12 @@
 #include "athena.h"
 #include "globals.h"
 #include "prototypes.h"
+/*============================================================================* 
+ *  * PRIVATE FUNCTION PROTOTYPES:
+ *   *============================================================================*/
 
-
-/* Make size of box and dimension of unit cell (r1 x r2) static globals so they
- * can be accessed by boundary value functions */
 static Real Lx,Ly;
 static int r1,r2;
-
-/*----------------------------------------------------------------------------*/
 
 void problem(DomainS *pDomain)
 {
@@ -27,7 +25,7 @@ void problem(DomainS *pDomain)
   int k, ks = pGrid->ks, ke = pGrid->ke;
   int kl,ku,irefine,ir,ix1,ix2;
 
-  //Real d0,v0,Mx,My,Mz,E0,r0,drat,p0; //Ambient Conditions
+  Real d0,v0,Mx,My,Mz,E0,r0,drat,p0; //Ambient Conditions
 
   PrimS  W;//Vector of primitives (left and right states)
   ConsS  U;//Vector of Conservatives 
@@ -35,10 +33,6 @@ void problem(DomainS *pDomain)
 
 /* Following are used to compute volume of cell crossed by initial interface
  * that is assigned to left/right states */
-/* int dll, dlr, drr, drl;
- * Real afl_lx, afr_lx, afl_rx, afr_rx;
- * Real afl_ly, afr_ly, afl_ry, afr_ry;
- * Real vfl, vfr, B1r, B2r; */
   Real vf;
   vf=1.0; //Let the total volume be 1.0 for now (Boundary not determined)
   // Reading values from input file: d,p,v1,v2,v3
@@ -93,10 +87,11 @@ void problem(DomainS *pDomain)
  * Userwork_in_loop        - problem specific work IN     main loop
  * Userwork_after_loop     - problem specific work AFTER  main loop
  *----------------------------------------------------------------------------*/
-void problem_read_restart(MeshS *pM, FILE *fp)
+void problem_write_restart(MeshS *pM, FILE *fp)
 {
   return;
 }
+
 
 void problem_read_restart(MeshS *pM, FILE *fp)
 {
