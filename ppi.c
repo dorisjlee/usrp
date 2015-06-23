@@ -37,9 +37,9 @@ void problem(DomainS *pDomain)
   int k, ks = pGrid->ks, ke = pGrid->ke;
   int kl,ku,irefine,ir,ix1,ix2;
 
-  Real x1,x2,x3,r,xs,xc,xf,xh,vs,vc,vf,vh;
-  Real xfp,xrp,xsp,xsm,xrm,xfm,vfp,vrp,vsp,vsm,vrm,vfm;
-  Real d0,v0,Mx,My,Mz,E0,r0;
+  //Real x1,x2,x3,r,xs,xc,xf,xh,vs,vc,vf,vh;
+  //Real xfp,xrp,xsp,xsm,xrm,xfm,vfp,vrp,vsp,vsm,vrm,vfm;
+  Real d0,v0,Mx,My,Mz,E0,r0,drat,p0; //Ambient Conditions
 
   Prim1DS  W;//Vector of primitives (left and right states)
   Cons1DS  U;//Vector of Conservatives 
@@ -52,17 +52,17 @@ void problem(DomainS *pDomain)
  * Real afl_ly, afr_ly, afl_ry, afr_ry;
  * Real vfl, vfr, B1r, B2r; */
   Real vf;
-  //Let the total volume be 1.0 for now (Boundary not determined)
-  vf=1.0;
-
+  vf=1.0; //Let the total volume be 1.0 for now (Boundary not determined)
   // Reading values from input file: d,p,v1,v2,v3
   W.d = par_getd("problem","d");
   W.P = par_getd("problem","p");
   W.Vx = par_getd("problem","v1");
   W.Vy = par_getd("problem","v2");
   W.Vz = par_getd("problem","v3");
-
-  U = Prim1D_to_Cons1D(&W);
+  drat = par_getd("problem","drat"); //Density ratio of the cloud (used to determine ambient d and p)
+  d0=W.d/drat;
+  p0=W.P/drat;
+  U = Prim1D_to_Cons1D(&W); //Convert to vector of conservatives
 
   q.d   = U.d;
   q.M1  = U.Mx;
