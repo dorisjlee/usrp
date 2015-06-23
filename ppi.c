@@ -1,34 +1,13 @@
-#include "copyright.h"
 /*============================================================================*/
-/*! \file shkset2d.c
- *  \brief Sets up shock at angle to grid to test multidimensional algorithm.
- *
- * PURPOSE: Sets up shock at ang_3=atan(Ly/Lx) to grid to test multidimensional
- *   algorithm.  Nx1/Nx2 must be the same ratio as Lx/Ly.  Uses the angle of the
- *   shock to remap ghost cells to the equivalent active grid cells, which
- *   requires Nx1>32, using special function pointers.  The shock is initialized
- *   with reference to a coordinate system (x,y,z) with transformation rules to
- *   the code coordinate system (x1,x2,x3)
- *   -  x =  x1*cos(ang_3) + x2*sin(ang_3)
- *   -  y = -x1*sin(ang_3) + x2*cos(ang_3)
- *   -  z = x3
-
- *   This inverts to:
- *   -  x1 = x*cos(ang_3) - y*sin(ang_3)
- *   -  x2 = x*sin(ang_3) + y*cos(ang_3)
- *   -  x3 = z								  
- *
- * If error_test=1 in the <problem> block, then the L1 error in the final
- * solution will be computed for the Sod shocktube (hydrodynamics) or the RJ2a
- * test (MHD).  This is useful for regression tests.
- *
+/*! \file ppi.c
+ * Sets up a 2D axisymmetric torus to look at papaloizou pringle instability
+ * Will be further extended to 3D to look at non-axisymmetric, global modes
  * PRIVATE FUNCTION PROTOTYPES:
  * - shkset2d_iib() - sets BCs on L-x1 (left edge) of grid.
  * - shkset2d_oib() - sets BCs on R-x1 (right edge) of grid.
  * - shkset2d_ijb() - sets BCs on L-x2 (bottom edge) of grid.
  * - shkset2d_ojb() - sets BCs on R-x2 (top edge) of grid.		      */
 /*============================================================================*/
-
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,14 +15,6 @@
 #include "athena.h"
 #include "globals.h"
 #include "prototypes.h"
-
-/*==============================================================================
- * PRIVATE FUNCTION PROTOTYPES:
- * shkset2d_iib() - sets BCs on L-x1 (left edge) of grid.
- * shkset2d_oib() - sets BCs on R-x1 (right edge) of grid.
- * shkset2d_ijb() - sets BCs on L-x2 (bottom edge) of grid.
- * shkset2d_ojb() - sets BCs on R-x2 (top edge) of grid.
- *============================================================================*/
 
 void shkset2d_iib(GridS *pGrid);
 void shkset2d_oib(GridS *pGrid);
@@ -215,9 +186,7 @@ void problem(DomainS *pDomain)
 	  pGrid->U[k][j][i].M1 = vfl*ql.M1 + vfr*qr.M1;
 	  pGrid->U[k][j][i].M2 = vfl*ql.M2 + vfr*qr.M2;
 	  pGrid->U[k][j][i].M3 = vfl*ql.M3 + vfr*qr.M3;
-#ifndef ISOTHERMAL
 	  pGrid->U[k][j][i].E  = vfl*ql.E + vfr*qr.E;
-#endif
 	}
       }
     }
@@ -225,11 +194,11 @@ void problem(DomainS *pDomain)
 
 /* Set boundary value function pointers */
 
-  bvals_mhd_fun(pDomain, left_x1,  shkset2d_iib);
+ /* bvals_mhd_fun(pDomain, left_x1,  shkset2d_iib);
   bvals_mhd_fun(pDomain, left_x2,  shkset2d_ijb);
   bvals_mhd_fun(pDomain, right_x1, shkset2d_oib);
   bvals_mhd_fun(pDomain, right_x2, shkset2d_ojb);
-
+*/
   return;
 }
 
@@ -244,12 +213,10 @@ void problem(DomainS *pDomain)
  * Userwork_after_loop     - problem specific work AFTER  main loop
  *----------------------------------------------------------------------------*/
 void problem_read_restart(MeshS *pM, FILE *fp)
-{
+{//Default restart procedures.
   Omega_0 = par_getd_def("problem","omega",1.0e-3);
-
   dump_history_enroll(hst_rho_Vx_dVy, "<rho Vx dVy>");
   dump_history_enroll(hst_rho_dVy2, "<rho dVy^2>");
-
   return;
 }
 
@@ -277,146 +244,3 @@ void Userwork_after_loop(MeshS *pM)
   return;
 }
 
-/*=========================== PRIVATE FUNCTIONS ==============================*/
-
-/*----------------------------------------------------------------------------*/
-/*! \fn void shkset2d_iib(GridS *pGrid)
- *  \brief Sets ghost zones using the nearest computational grid
- * cells implied by the size of the unit cell (r1xr2).
- */
-
-void shkset2d_iib(GridS *pGrid)
-{
-  const int is = pGrid->is;
-  int i, j, k, ju, jl, kl, ku; /* j-upper, j-lower */
-
-  if (pGrid->Nx[1] > 1){
-    ju = pGrid->je + nghost;
-    jl = pGrid->js - nghost + r2;
-  } else {
-    ju = pGrid->je;
-    jl = pGrid->js;
-  }
-
-  if (pGrid->Nx[2] > 1){
-    ku = pGrid->ke + nghost;
-    kl = pGrid->ks - nghost;
-  } else {
-    ku = pGrid->ke;
-    kl = pGrid->ks;
-  }
-
-  for (k=kl; k<=ku; k++) {
-    for (i=1; i<=nghost; i++) { /* Do NOT Change this loop ordering! */
-      for (j=jl; j<=ju; j++) {
-	pGrid->U  [k][j][is-i] = pGrid->U  [k][j-r2][is-i+r1];
-      }
-    }
-  }
-  return;
-}
-
-/*----------------------------------------------------------------------------*/
-/*! \fn void shkset2d_oib(GridS *pGrid)
- *  \brief Sets ghost zones using the nearest computational grid
- * cells implied by the size of the unit cell (r1xr2).
- */
-
-void shkset2d_oib(GridS *pGrid)
-{
-  const int ie = pGrid->ie;
-  int i, j, k, ju, jl, kl, ku; /* j-upper, j-lower */
-
-  if (pGrid->Nx[1] > 1){
-    ju = pGrid->je + nghost - r2;
-    jl = pGrid->js - nghost;
-  } else {
-    ju = pGrid->je;
-    jl = pGrid->js;
-  }
-
-  if (pGrid->Nx[2] > 1){
-    ku = pGrid->ke + nghost;
-    kl = pGrid->ks - nghost;
-  } else {
-    ku = pGrid->ke;
-    kl = pGrid->ks;
-  }
-
-/* Note that i=ie+1 is not a boundary condition for the interface field B1i */
-
-  for (k=kl; k<=ku; k++) {
-    for (i=1; i<=nghost; i++) { /* Do NOT Change this loop ordering! */
-      for (j=jl; j<=ju; j++) {
-	pGrid->U[k][j][ie+i] = pGrid->U[k][j+r2][ie+i-r1];
-      }
-    }
-  }
-  return;
-}
-
-/*----------------------------------------------------------------------------*/
-/*! \fn void shkset2d_ijb(GridS *pGrid)
- *  \brief Sets ghost zones using the nearest computational grid
- * cells implied by the size of the unit cell (r1xr2).
- */
-
-void shkset2d_ijb(GridS *pGrid)
-{
-  const int js = pGrid->js;
-  int i, j, k, iu, il, kl, ku; /* i-upper, i-lower */
-
-  iu = pGrid->ie + nghost;
-  il = pGrid->is - nghost + r1;
-
-  if (pGrid->Nx[2] > 1){
-    ku = pGrid->ke + nghost;
-    kl = pGrid->ks - nghost;
-  } else {
-    ku = pGrid->ke;
-    kl = pGrid->ks;
-  }
-
-  for (k=kl; k<=ku; k++) {
-    for (j=1; j<=nghost; j++) {
-      for (i=il; i<=iu; i++) {
-	pGrid->U  [k][js-j][i] = pGrid->U  [k][js-j+r2][i-r1];
-      }
-    }
-  }
-  return;
-}
-
-/*----------------------------------------------------------------------------*/
-/*! \fn void shkset2d_ojb(GridS *pGrid)
- *  \brief Sets ghost zones using the nearest computational grid
- * cells implied by the size of the unit cell (r1xr2).
- */
-
-void shkset2d_ojb(GridS *pGrid)
-{
-  const int je = pGrid->je;
-  int i, j, k, iu, il, kl, ku; /* i-upper, i-lower */
-
-  iu = pGrid->ie + nghost - r1;
-  il = pGrid->is - nghost;
-
-  if (pGrid->Nx[2] > 1){
-    ku = pGrid->ke + nghost;
-    kl = pGrid->ks - nghost;
-  } else {
-    ku = pGrid->ke;
-    kl = pGrid->ks;
-  }
-
-/* Note that j=je+1 is not a boundary condition for the interface field B2i */
-
-  for (k=kl; k<=ku; k++) {
-    for (j=1; j<=nghost; j++) {
-      for (i=il; i<=iu; i++) {
-	pGrid->U[k][je+j][i] = pGrid->U[k][je+j-r2][i+r1];
-      }
-    }
-  }
-  return;
-}
