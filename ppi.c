@@ -1,12 +1,7 @@
+#include "copyright.h"
 /*============================================================================*/
 /*! \file ppi.c
- * Sets up a 2D axisymmetric torus to look at papaloizou pringle instability
- * Will be further extended to 3D to look at non-axisymmetric, global modes
- * PRIVATE FUNCTION PROTOTYPES:
- * - shkset2d_iib() - sets BCs on L-x1 (left edge) of grid.
- * - shkset2d_oib() - sets BCs on R-x1 (right edge) of grid.
- * - shkset2d_ijb() - sets BCs on L-x2 (bottom edge) of grid.
- * - shkset2d_ojb() - sets BCs on R-x2 (top edge) of grid.		      */
+ * \brief Sets up a 2D axisymmetric torus to look at papaloizou pringle instability. Will be further extended to 3D to look at non-axisymmetric, global modes */
 /*============================================================================*/
 #include <math.h>
 #include <stdio.h>
@@ -16,10 +11,6 @@
 #include "globals.h"
 #include "prototypes.h"
 
-void shkset2d_iib(GridS *pGrid);
-void shkset2d_oib(GridS *pGrid);
-void shkset2d_ijb(GridS *pGrid);
-void shkset2d_ojb(GridS *pGrid);
 
 /* Make size of box and dimension of unit cell (r1 x r2) static globals so they
  * can be accessed by boundary value functions */
@@ -27,7 +18,6 @@ static Real Lx,Ly;
 static int r1,r2;
 
 /*----------------------------------------------------------------------------*/
-/* problem:   */
 
 void problem(DomainS *pDomain)
 {
@@ -37,12 +27,10 @@ void problem(DomainS *pDomain)
   int k, ks = pGrid->ks, ke = pGrid->ke;
   int kl,ku,irefine,ir,ix1,ix2;
 
-  //Real x1,x2,x3,r,xs,xc,xf,xh,vs,vc,vf,vh;
-  //Real xfp,xrp,xsp,xsm,xrm,xfm,vfp,vrp,vsp,vsm,vrm,vfm;
-  Real d0,v0,Mx,My,Mz,E0,r0,drat,p0; //Ambient Conditions
+  //Real d0,v0,Mx,My,Mz,E0,r0,drat,p0; //Ambient Conditions
 
-  Prim1DS  W;//Vector of primitives (left and right states)
-  Cons1DS  U;//Vector of Conservatives 
+  PrimS  W;//Vector of primitives (left and right states)
+  ConsS  U;//Vector of Conservatives 
   ConsS  q;//Not too sure what this is? 
 
 /* Following are used to compute volume of cell crossed by initial interface
@@ -56,18 +44,18 @@ void problem(DomainS *pDomain)
   // Reading values from input file: d,p,v1,v2,v3
   W.d = par_getd("problem","d");
   W.P = par_getd("problem","p");
-  W.Vx = par_getd("problem","v1");
-  W.Vy = par_getd("problem","v2");
-  W.Vz = par_getd("problem","v3");
+  W.V1 = par_getd("problem","v1");
+  W.V2 = par_getd("problem","v2");
+  W.V3 = par_getd("problem","v3");
   drat = par_getd("problem","drat"); //Density ratio of the cloud (used to determine ambient d and p)
-  d0=W.d/drat;
-  p0=W.P/drat;
-  U = Prim1D_to_Cons1D(&W); //Convert to vector of conservatives
+  //d0=W.d/drat;
+  //p0=W.P/drat;
+  U = Prim_to_Cons(&W); //Convert to vector of conservatives
 
   q.d   = U.d;
-  q.M1  = U.Mx;
-  q.M2  = U.My;
-  q.M3  = U.Mz;
+  q.M1  = U.M1;
+  q.M2  = U.M2;
+  q.M3  = U.M3;
   q.E   = U.E;
 
   //Initializes the 2D grid (k not really considered here?)
@@ -84,7 +72,6 @@ void problem(DomainS *pDomain)
 	}
       }
     }
-  }
 
 /* Set boundary value function pointers */
 
@@ -107,10 +94,7 @@ void problem(DomainS *pDomain)
  * Userwork_after_loop     - problem specific work AFTER  main loop
  *----------------------------------------------------------------------------*/
 void problem_read_restart(MeshS *pM, FILE *fp)
-{//Default restart procedures.
-  Omega_0 = par_getd_def("problem","omega",1.0e-3);
-  dump_history_enroll(hst_rho_Vx_dVy, "<rho Vx dVy>");
-  dump_history_enroll(hst_rho_dVy2, "<rho dVy^2>");
+{
   return;
 }
 
