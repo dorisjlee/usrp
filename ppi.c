@@ -26,10 +26,6 @@ void shkset2d_ojb(GridS *pGrid);
 static Real Lx,Ly;
 static int r1,r2;
 
-/* Analytic solution at stopping time, shared with Userwork_after_loop to
- * compute L1 error */
-static ConsS ***RootSoln=NULL;
-
 /*----------------------------------------------------------------------------*/
 /* problem:   */
 
@@ -78,8 +74,8 @@ void problem(DomainS *pDomain)
   Wr.Vy = par_getd("problem","v2r");
   Wr.Vz = par_getd("problem","v3r");
 
-  Ul = Prim1D_to_Cons1D(&Wl, &Bxl);
-  Ur = Prim1D_to_Cons1D(&Wr, &Bxr);
+  Ul = Prim1D_to_Cons1D(&Wl);
+  Ur = Prim1D_to_Cons1D(&Wr);
 
 /* Initialize ql rotated to the (x1,x2,x3) coordinate system */
   ql.d   = Ul.d;
@@ -102,86 +98,7 @@ void problem(DomainS *pDomain)
       ix2 = j + pGrid->Disp[1];
       for (i=0; i<=ie+nghost; i++) {
 	ix1 = i + pGrid->Disp[0];
-
-/* cell is completely in the left state */
-	if((drr = r2*(ix1) + r1*(ix2) - gcd*r1*r2) <= 0){
-	  pGrid->U[k][j][i] = ql;
-	}
-/* cell is completely in the right state */
-	else if((dll = r2*(ix1-1) + r1*(ix2-1) - gcd*r1*r2) >= 0){
-	  pGrid->U[k][j][i] = qr;
-	}
-/* The more complicated case of a cell  split by the interface boundary */
-	else{
-	  dlr = r2*(ix1-1) + r1*(ix2) - gcd*r1*r2;
-
-	  if(dlr < 0){ /* The boundary hits the right y-face */
-	    afl_lx = 1.0;
-	    afr_lx = 0.0;
-	    afl_ry = (Real)(-dlr)/(Real)(r2);
-	    afr_ry = 1.0 - afl_ry;
-	  }
-	  else if(dlr > 0){ /* The boundary hits the left x-face */
-	    afl_lx = (Real)(-dll)/(Real)(r1);
-	    afr_lx = 1.0 - afl_lx;
-	    afl_ry = 0.0;
-	    afr_ry = 1.0;
-	  }
-	  else{ /* dlr == 0.0, The boundary hits the grid cell corner */
-	    afl_lx = 1.0;
-	    afr_lx = 0.0;
-	    afl_ry = 0.0;
-	    afr_ry = 1.0;
-	  }
-
-	  drl = r2*(ix1) + r1*(ix2-1) - gcd*r1*r2;
-
-	  if(drl < 0){ /* The boundary hits the right x-face */
-	    afl_rx = (Real)(-drl)/(Real)(r1);
-	    afr_rx = 1.0 - afl_rx;
-	    afl_ly = 1.0;
-	    afr_ly = 0.0;
-	  }
-	  else if(drl > 0){ /* The boundary hits the left y-face */
-	    afl_rx = 0.0;
-	    afr_rx = 1.0;
-	    afl_ly = (Real)(-dll)/(Real)(r2);
-	    afr_ly = 1.0 - afl_ly;
-	  }
-	  else{ /* drl == 0.0, The boundary hits the grid cell corner */
-	    afl_rx = 0.0;
-	    afr_rx = 1.0;
-	    afl_ly = 1.0;
-	    afr_ly = 0.0;
-	  }
-
-/* The boundary hits both x-interfaces */
-	  if(dlr > 0 && drl < 0){ 
-	    vfl = 0.5*(afl_lx + afl_rx);
-	    vfr = 1.0 - vfl;
-	  }
-/* The boundary hits both y-interfaces */
-	  else if(dlr < 0 && drl > 0){ 
-	    vfl = 0.5*(afl_ly + afl_ry);
-	    vfr = 1.0 - vfl;
-	  }
-/* The boundary hits both grid cell corners */
-	  else if(dlr == 0 && drl == 0){ 
-	    vfl = vfr = 0.5;
-	  }
-/* The boundary hits the left x- and left y-interface */
-	  else if(dlr > 0 && drl > 0){
-	    vfl = 0.5*afl_lx*afl_ly;
-	    vfr = 1.0 - vfl;
-	  }
-/* dlr<0 && drl<0:  The boundary hits the right x- and right y-interface */
-	  else{ 
-	    vfr = 0.5*afr_rx*afr_ry;
-	    vfl = 1.0 - vfr;
-	  }
-
-
-/* Initialize the volume averaged quantities */
+	 /* Initialize the volume averaged quantities */
 	  pGrid->U[k][j][i].d  = vfl*ql.d + vfr*qr.d;
 	  pGrid->U[k][j][i].M1 = vfl*ql.M1 + vfr*qr.M1;
 	  pGrid->U[k][j][i].M2 = vfl*ql.M2 + vfr*qr.M2;
