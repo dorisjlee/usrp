@@ -26,7 +26,8 @@ void problem(DomainS *pDomain)
   int kl,ku,irefine,ir,ix1,ix2;
 
   Real d0,v0,Mx,My,Mz,E0,r0,drat,p0; //Ambient Conditions
-
+  Real c , a ,r ,theta,p;
+  float x,y;
   PrimS  W;//Vector of primitives (left and right states)
   ConsS  U;//Vector of Conservatives 
 
@@ -41,8 +42,12 @@ void problem(DomainS *pDomain)
   W.V2 = par_getd("problem","v2");
   W.V3 = par_getd("problem","v3");
   drat = par_getd("problem","drat"); //Density ratio of the cloud (used to determine ambient d and p)
-  //d0=W.d/drat;
-  //p0=W.P/drat;
+  c = par_getd("problem","c"); //Distance from torus center to rotation axis
+  a = par_getd("problem","a"); //Radius of the Torus cross section
+  d0=W.d/drat;
+  p0=W.P/drat;
+  printf("c: %d",c);
+  printf("a: %d",a);  
   U = Prim_to_Cons(&W); //Convert to vector of conservatives
 
   //Initializes the 2D grid (k not really considered here?)
@@ -51,6 +56,18 @@ void problem(DomainS *pDomain)
       ix2 = j + pGrid->Disp[1];
       for (i=0; i<=ie+nghost; i++) {
 	  ix1 = i + pGrid->Disp[0];
+ 	  printf("(i,j) : (%d,%d)   ",i,j);
+	  printf("(i1,ix2) : (%d,%d)   ",ix1,ix2);
+	  x = (float)i;
+	  y = (float)j;
+	  printf("(x,y) : (%2f,%2f)   ",x,y);
+	  r = sqrt(x*x+y*y); //Pythagorean radii
+	  theta = atan(y/x); //polar angle
+	  p = r*r - 2*c*r*cos(theta) + c*c;
+          printf("r: %2f		",r);
+	  printf("theta: %2f	",theta);
+	  printf("p: %2f	 \n",p);
+	  
 	  pGrid->U[k][j][i].d  = vf*U.d;
 	  pGrid->U[k][j][i].M1 = vf*U.M1;
 	  pGrid->U[k][j][i].M2 = vf*U.M2;

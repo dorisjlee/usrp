@@ -46,8 +46,8 @@ bc_ix1          = 1         # boundary condition flag for inner-I (X1)
 bc_ox1          = 1         # boundary condition flag for outer-I (X1)
 
 Nx2             = 64        # Number of zones in X2-direction
-x2min           = -5.0      # minimum value of X2
-x2max           = 5.0       # maximum value of X2
+x2min           = -10.0      # minimum value of X2
+x2max           = 10.0      # maximum value of X2
 bc_ix2          = 1         # boundary condition flag for inner-J (X2)
 bc_ox2          = 1         # boundary condition flag for outer-J (X2)
 
@@ -62,4 +62,5 @@ p 		= 43.0 #placeholder for now
 v1		= 0.0
 v2		= 0.0
 v3		= 0.0
-
+c               = 15.0
+a 		= 5.0
