@@ -59,9 +59,9 @@ void problem(DomainS *pDomain)
 	  ix1 = i + pGrid->Disp[0];
  	  /*printf("(i,j) : (%d,%d)   ",i,j);
 	  printf("(i1,ix2) : (%d,%d)   ",ix1,ix2);*/
-	  x = (float)i;
-	  y = (float)j;
-	  //printf("(x,y) : (%2f,%2f)   ",x,y);
+	  x = (float)(i-32);
+	  y = (float)(j-32);
+	  printf("(x,y) : (%2f,%2f)   ",x,y);
 	  r = sqrt(pow((double)(x),2)+pow((double)(y),2)); //Pythagorean radii
 	  theta = atan(y/x); //polar angle
 	  p = r*r - 2*c*r*cos(theta) + c*c;
