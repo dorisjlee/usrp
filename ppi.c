@@ -29,7 +29,6 @@ void problem(DomainS *pDomain)
 
   PrimS  W;//Vector of primitives (left and right states)
   ConsS  U;//Vector of Conservatives 
-  ConsS  q;//Not too sure what this is? 
 
 /* Following are used to compute volume of cell crossed by initial interface
  * that is assigned to left/right states */
@@ -46,23 +45,17 @@ void problem(DomainS *pDomain)
   //p0=W.P/drat;
   U = Prim_to_Cons(&W); //Convert to vector of conservatives
 
-  q.d   = U.d;
-  q.M1  = U.M1;
-  q.M2  = U.M2;
-  q.M3  = U.M3;
-  q.E   = U.E;
-
   //Initializes the 2D grid (k not really considered here?)
   for (k=kl; k<=ku; k++) {
     for (j=0; j<=je+nghost; j++) {
       ix2 = j + pGrid->Disp[1];
       for (i=0; i<=ie+nghost; i++) {
 	  ix1 = i + pGrid->Disp[0];
-	  pGrid->U[k][j][i].d  = vf*q.d;
-	  pGrid->U[k][j][i].M1 = vf*q.M1;
-	  pGrid->U[k][j][i].M2 = vf*q.M2;
-	  pGrid->U[k][j][i].M3 = vf*q.M3;
-	  pGrid->U[k][j][i].E  = vf*q.E;
+	  pGrid->U[k][j][i].d  = vf*U.d;
+	  pGrid->U[k][j][i].M1 = vf*U.M1;
+	  pGrid->U[k][j][i].M2 = vf*U.M2;
+	  pGrid->U[k][j][i].M3 = vf*U.M3;
+	  pGrid->U[k][j][i].E  = vf*U.E;
 	}
       }
     }
