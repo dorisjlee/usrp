@@ -25,44 +25,68 @@ void problem(DomainS *pDomain)
   int k, ks = pGrid->ks, ke = pGrid->ke;
   int kl,ku,irefine,ir,ix1,ix2;
 
+  Real dt,pt; //Values for the torus
   Real d0,v0,Mx,My,Mz,E0,r0,drat,p0; //Ambient Conditions
-
-  PrimS  W;//Vector of primitives (left and right states)
+  Real c , a ,r ,theta,p;
+  float x,y;
+  PrimS  W;//Vector of primitives 
   ConsS  U;//Vector of Conservatives 
-  ConsS  q;//Not too sure what this is? 
-
+  int epsilon=5; //extra gridding near boundary
 /* Following are used to compute volume of cell crossed by initial interface
  * that is assigned to left/right states */
   Real vf;
   vf=1.0; //Let the total volume be 1.0 for now (Boundary not determined)
   // Reading values from input file: d,p,v1,v2,v3
-  W.d = par_getd("problem","d");
-  W.P = par_getd("problem","p");
+  dt = par_getd("problem","d");
+  pt = par_getd("problem","p");
   W.V1 = par_getd("problem","v1");
   W.V2 = par_getd("problem","v2");
   W.V3 = par_getd("problem","v3");
   drat = par_getd("problem","drat"); //Density ratio of the cloud (used to determine ambient d and p)
-  //d0=W.d/drat;
-  //p0=W.P/drat;
-  U = Prim_to_Cons(&W); //Convert to vector of conservatives
-
-  q.d   = U.d;
-  q.M1  = U.M1;
-  q.M2  = U.M2;
-  q.M3  = U.M3;
-  q.E   = U.E;
+  c = par_getd("problem","c"); //Distance from torus center to rotation axis
+  a = par_getd("problem","a"); //Radius of the Torus cross section
+  d0=dt/drat;
+  p0=pt/drat;
+  printf("c: %2f",c);
+  printf("a: %2f",a);  
 
   //Initializes the 2D grid (k not really considered here?)
   for (k=kl; k<=ku; k++) {
     for (j=0; j<=je+nghost; j++) {
       ix2 = j + pGrid->Disp[1];
       for (i=0; i<=ie+nghost; i++) {
+          
 	  ix1 = i + pGrid->Disp[0];
-	  pGrid->U[k][j][i].d  = vf*q.d;
-	  pGrid->U[k][j][i].M1 = vf*q.M1;
-	  pGrid->U[k][j][i].M2 = vf*q.M2;
-	  pGrid->U[k][j][i].M3 = vf*q.M3;
-	  pGrid->U[k][j][i].E  = vf*q.E;
+ 	  /*printf("(i,j) : (%d,%d)   ",i,j);
+	  printf("(i1,ix2) : (%d,%d)   ",ix1,ix2);*/
+	  x = (float)(i-32);
+	  y = (float)(j-32);
+	  printf("(x,y) : (%2f,%2f)   ",x,y);
+	  r = sqrt(pow((double)(x),2)+pow((double)(y),2)); //Pythagorean radii
+	  theta = atan(y/x); //polar angle
+	  p = r*r - 2*c*r*cos(theta) + c*c;
+          /*printf("r: %2f		",r);
+	  printf("theta: %2f	",theta);
+	  printf("p: %2f	 \n",p);*/
+	  
+	  if (p<=a*a){
+	    //Inside the torus
+	    //printf("inside!");
+	    W.d = dt;
+	    W.P = pt;
+	  }
+	  else{
+	    //Outside the torus
+	    //printf("outside!");
+	    W.d = d0;
+	    W.P = p0;
+	  }
+	  U = Prim_to_Cons(&W); //Convert to vector of conservatives
+	  pGrid->U[k][j][i].d  = vf*U.d;
+	  pGrid->U[k][j][i].M1 = vf*U.M1;
+	  pGrid->U[k][j][i].M2 = vf*U.M2;
+	  pGrid->U[k][j][i].M3 = vf*U.M3;
+	  pGrid->U[k][j][i].E  = vf*U.E;
 	}
       }
     }
