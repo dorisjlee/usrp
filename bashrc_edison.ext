@@ -1,0 +1,40 @@
+# begin .bashrc.ext
+[ -e $HOME/.dbgdot ] && echo "entering .bashrc.ext"
+PATH=$PATH:/global/scratch2/sd/dorislee/Montage_v3.3/bin
+# Alias
+alias ramses1d='/global/homes/d/dorislee/ramses/trunk/ramses/bin/ramses1d'
+alias ramses2d='/global/homes/d/dorislee/ramses/trunk/ramses/bin/ramses2d'
+alias ramses3d='/global/homes/d/dorislee/ramses/trunk/ramses/bin/ramses3d'
+alias qs='qstat -u dorislee'
+alias dir='ls -F -s -hâ'
+alias la='ls -a -F -sâ'
+alias lsd='ls -F|grep /â'
+alias qint='qsub -I -l mppwidth=24'
+alias athena='/global/homes/d/dorislee/athena4.2/bin/athena'
+alias configure='/global/homes/d/dorislee/athena4.2/configure' 
+#umask 002 
+umask 022
+if [ $NERSC_HOST == "carver","hopper","edison" ]
+then
+HOSTNAME=`uname -n`
+export HOSTNAME MANPATH
+PS1='[PWD]$'
+fi
+
+module load python 
+ if [ "$NERSC_HOST" == "hopper" ]
+ then
+ 	module swap PrgEnv-pgi PrgEnv-gnu
+	PATH=$PATH:/global/homes/d/dorislee/hopper_scratch/Montage_v3.3
+ elif  [ "$NERSC_HOST" == "edison" ]
+ then 
+	module swap PrgEnv-intel PrgEnv-gnu
+ elif  [ "$NERSC_HOST" == "carver" ]
+ then
+	module swap pgi gcc
+	module swap openmpi openmpi-gcc
+ fi
+
+
+[ -e $HOME/.dbgdot ] && echo "exiting .bashrc.ext"
+# end .bashrc.ext
