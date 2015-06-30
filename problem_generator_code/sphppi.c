@@ -35,77 +35,56 @@ void problem(DomainS *pDomain)
   int k, ks = pGrid->ks, ke = pGrid->ke;
   Real ***pr;
   Real f1l,f1r,f2l,f2r;
-  Real amp;
-
+  Real vf=1.0;
+  Real a,omega0,h2, theta,r,phi,v3,rho,omega,p;
+  int n,q;
+  PrimS  W;//Vector of primitives 
+  ConsS  U;//Vector of Conservatives 
   /* read parameters */
-  gm = par_getd("problem","gamma");
-  beta = par_getd("problem","beta");
-  dist = par_getd("problem","dist");
-  rg = par_getd("problem","rg");
-  d0=par_getd("problem","d0");
-  amp=par_getd("problem","amp");
-  /* calculate some constant values */
+  gm =par_getd("problem","gamma");
+  n  =  par_getd("problem","n");
+  q  =  par_getd("problem","q");
+  a  =  par_getd("problem","a");
+  w0  =  par_getd("problem","w0");
+  omega0  =  par_getd("problem","omega0");
+  W.V1=0.0;
+  W.V2=0.0;
   g = 1.0;
-  ptmass = 1.0;
+  //ptmass = 1.0;
   w0 = 1.0;
-  cprime = 0.5/dist;
-  en = 1.0/(gm-1.0);
-  acons=0.5*(dist-1.0)/dist/(en+1.0);
-
+  //cprime = 0.5/dist;
+  //en = 1.0/(gm-1.0);  // this compute n  using gamma by the relation gamma=1+1/n
+  //acons=0.5*(dist-1.0)/dist/(en+1.0); //Geometry stuff? (you can compute a from distortion factor?)
   /* assign boundary conditions and gravitational force function*/
   bvals_mhd_fun(pDomain, left_x1,  sphoutflow_ix1);
   bvals_mhd_fun(pDomain, right_x1, sphoutflow_ox1);
   bvals_mhd_fun(pDomain, left_x2,  sphoutflow_ix2);
   bvals_mhd_fun(pDomain, right_x2, sphoutflow_ox2);
   x1GravAcc = grav_acc;
-
-  /* allocate memory for the gas pressure */
-  pr=(Real***)calloc_3d_array(pGrid->Nx[2]+2*nghost, pGrid->Nx[1]+2*nghost, pGrid->Nx[0]+2*nghost, sizeof(Real));
-
-  /* Background */ 
   for (k=ks; k<=ke; k++) {
     for (j=js; j<=je; j++) {
       for (i=is; i<=ie; i++) {
-        pGrid->U[k][j][i].d  = d0;
-        pGrid->U[k][j][i].M1 = 0.0;
-        pGrid->U[k][j][i].M2 = 0.0;
-        pGrid->U[k][j][i].M3 = 0.0;
-        pr[k][j][i]=d0/pGrid->px1v[i];
+	r= pGrid->px1v[i];
+	theta = pGrid->px2v[j]; 
+	phi = pGrid->px3[k];
+  	//Axissymmetric initial condition that satisfies hydrostatic equilibrium
+	h2=(2*q-3)*(pow(a,2)-pow(r-w0,2));     //h squared, see GGN 1986 Eq.2.13
+  	/*W.V3 = omega0*pow(w0/r,q);//rotational velocity (in phi direction)
+  	W.d = pow(pow(omega,2)/(2*(n+1)),n)*pow(h2-pow(r*cos(theta),2),n);
+	W.P = pow(pow(omega,2)/(2*(n+1)),n+1)*pow(h2-pow(r*cos(theta),2),n+1);*/
+	W.V3=1.0;
+	W.d=3.0;
+	W.P=2.0;
+ 	U = Prim_to_Cons(&W); //Convert to vector of conservatives
+        pGrid->U[k][j][i].d  = vf*U.d;
+        pGrid->U[k][j][i].M1 = 0.0;// momentum_r 0 since initial vr =0
+        pGrid->U[k][j][i].M2 = 0.0;// p_theta =0 
+        pGrid->U[k][j][i].M3 = vf*U.M3;
+        pGrid->U[k][j][i].E  = vf*U.E;
+  
       }
     }
   }
-  /* Torus */
-  for (k=ks; k<=ke; k++) {
-    for (j=js; j<=je; j++) {
-      for (i=is; i<=ie; i++) {
-        /*** Initial Condition: replace this with a torus in equilibrium ***/
-        /* <r>[i] = pGrid->px1v[i], <theta>[j] = pGrid->px2v[j], <phi>[k] = pGrid->px3[k] */
-      	/* U[k][j][i].d : density, U.M1,2,3 : r,theta,phi-momentum, U.E: total energy, pr : pressure */
-        pGrid->U[k][j][i].d  = d0; //fix this
-        pGrid->U[k][j][i].M1 = 0.0; // OK
-        pGrid->U[k][j][i].M2 = 0.0; // OK
-      	pGrid->U[k][j][i].M3 = pGrid->U[k][j][i].d / (pGrid->px1v[i]*sin(pGrid->px2v[j])); // OK
-        pr[k][j][i]=d0/pGrid->px1v[i]; // fix this
-        /*** basically, that's all! ***/
-      }
-    }
-  }
-
-  /* Calculate the total energy including kinetic and magnetic energies*/
-  for (k=ks; k<=ke; k++) {
-    for (j=js; j<=je; j++) {
-      for (i=is; i<=ie; i++) {
-        pGrid->U[k][j][i].E  = pr[k][j][i]*en+0.5*SQR(pGrid->U[k][j][i].M3)/pGrid->U[k][j][i].d;
-#ifdef MHD
-        pGrid->U[k][j][i].B1c = ((pGrid->px1i[i+1]-pGrid->px1v[i])*pGrid->B1i[k][j][i] + (pGrid->px1v[i]-pGrid->px1i[i])*pGrid->B1i[k][j][i+1])/pGrid->dx1;
-        pGrid->U[k][j][i].B2c = ((pGrid->px2i[j+1]-pGrid->px2v[j])*pGrid->B2i[k][j][i] + (pGrid->px2v[j]-pGrid->px2i[j])*pGrid->B2i[k][j+1][i])/pGrid->dx2;
-        pGrid->U[k][j][i].B3c = (pGrid->B3i[k][j][i] + pGrid->B3i[k+1][j][i])*0.5;
-        pGrid->U[k][j][i].E += 0.5*(SQR(pGrid->U[k][j][i].B1c)+SQR(pGrid->U[k][j][i].B2c)+SQR(pGrid->U[k][j][i].B3c));
-#endif /* MHD */
-      }
-    }
-  }
-  free_3d_array(pr);
 }
 
 /*==============================================================================

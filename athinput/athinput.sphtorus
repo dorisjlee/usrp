@@ -6,7 +6,7 @@ config  = --with-coord=spherical --with-gas=hydro --with-problem=sphtorus --with
 
 <job>
 problem_id   = torus    # problem ID: basename of output filenames
-maxout       = 2          # Output blocks number from 1 -> maxout
+maxout       = 5          # Output blocks number from 1 -> maxout
 num_domains  = 1           # number of Domains in Mesh
 
 <output1>
@@ -16,6 +16,25 @@ dt      = 0.1            # time increment between outputs
 <output2>
 out_fmt = vtk              # Binary data dump
 dt      = 1.0              # time increment between outputs
+
+<output3>
+out_fmt = rst
+dt      = 1.0
+
+<output4>
+out_fmt = slice
+dt      = 0.314159265
+out     = d
+id      = d
+x3      = 0
+
+<output5>
+out_fmt = slice
+dt      = 0.314159265
+out     = d
+id      = d
+x2      = 1.57079632679
+
 
 <time>
 cour_no         = 0.4      # The Courant, Friedrichs, & Lewy (CFL) Number
@@ -48,10 +67,9 @@ NGrid_x3        = 1
 
 <problem>
 gamma = 1.666666667         # gamma = C_p/C_v
-n    = 1.5 		    # Compressibility (n=1.5 for adiabatic)
-q    = 2		    #angular momentum distribution
-a    = 5.0		    #minor radius of torus
-w0   = 	30.0 		    #distance to density max			
-omega0= 20.0		    #constant of proportionailty for v_phi distribution
-p    = 29.0		    #pressure (placeholder for now)
-d    = 43.0 		    #density (placeholder for now)
+beta = 400                  # plasma beta
+dist = 1.125                # distortion parameter
+rg   = 0.0                  # gravitational radius
+d0   = 0.0001
+amp  = 0.0
+
