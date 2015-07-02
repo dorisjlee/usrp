@@ -5,7 +5,7 @@ journal = Stone and Pringle, 2001, MNRAS
 config  = --with-coord=spherical --with-gas=hydro --with-problem=sphtorus --with-integrator=vl --with-order=2p --with-flux=hllc
 
 <job>
-problem_id   = torus    # problem ID: basename of output filenames
+problem_id   = sphtorus    # problem ID: basename of output filenames
 maxout       = 5          # Output blocks number from 1 -> maxout
 num_domains  = 1           # number of Domains in Mesh
 
@@ -66,10 +66,10 @@ NGrid_x2        = 1
 NGrid_x3        = 1
 
 <problem>
-gamma = 1.666666667         # gamma = C_p/C_v
-beta = 400                  # plasma beta
-dist = 1.125                # distortion parameter
+n    = 1.5 		    # Compressibility 
+d    = 1.125                # distortion parameter
 rg   = 0.0                  # gravitational radius
-d0   = 0.0001
-amp  = 0.0
+d0   = 0.0001		    # ambient density
+pratio = 0.005		    # Ratio between ambient and torus pressure 
+q    = 2.0		    # angular momentum distribution    
 

@@ -25,7 +25,7 @@ void sphoutflow_ix1(GridS *pG);
 void sphoutflow_ox1(GridS *pG);
 void sphoutflow_ix2(GridS *pG);
 void sphoutflow_ox2(GridS *pG);
-static Real gm, g, ptmass, en, cprime, beta, w0, rg, dist, acons, d0;
+static Real G,M,gm,n,q,w0,omega0,d,d0, A,rg; //constants
 
 void problem(DomainS *pDomain)
 {
@@ -35,32 +35,40 @@ void problem(DomainS *pDomain)
   int k, ks = pGrid->ks, ke = pGrid->ke;
   Real ***pr;
   Real f1l,f1r,f2l,f2r;
-  Real vf=1.0;
-  Real a,omega0,h2, theta,r,phi,v3,rho,omega,p;
-  int n,q;
+  Real vf=1.0; //Effective volume (set to 1 for now)
+  Real r,theta,phi,v3,rho,omega,p,args; //Positional variables and physical quantities
   PrimS  W;//Vector of primitives 
   ConsS  U;//Vector of Conservatives 
-  /* read parameters */
-  gm =par_getd("problem","gamma");
+  //Constants and defined parameters
   n  =  par_getd("problem","n");
   q  =  par_getd("problem","q");
-  a  =  par_getd("problem","a");
-  w0  =  par_getd("problem","w0");
+  d0 = par_getd("problem","d0");
   omega0  =  par_getd("problem","omega0");
+  d= par_getd("problem","d"); 
+  gm  = 1.+1./n;
+  rg = par_getd("problem","rg");
+  // Normalized to natural unit system
+  G = 1.0;
+  M = 1.0; //pointmass
+  w0 = 1.0; //radius of max density (and P) 
+  A =pow((d-1)/(2*d),n)/(n+1); //Choose rho_max = 1
+  //Checking Constants
+  printf("G,M,gm,n,q,w0,omega0,d,d0, A:\n  %2f,%2f,%2f,%2f,%2f,%2f,%2f,%2f,%2f,%2f",G,M,gm,n,q,w0,omega0,d,d0, A);
+  //Ambient Conditions
   W.V1=0.0;
   W.V2=0.0;
-  g = 1.0;
-  //ptmass = 1.0;
-  w0 = 1.0;
-  //cprime = 0.5/dist;
-  //en = 1.0/(gm-1.0);  // this compute n  using gamma by the relation gamma=1+1/n
-  //acons=0.5*(dist-1.0)/dist/(en+1.0); //Geometry stuff? (you can compute a from distortion factor?)
-  /* assign boundary conditions and gravitational force function*/
-  bvals_mhd_fun(pDomain, left_x1,  sphoutflow_ix1);
-  bvals_mhd_fun(pDomain, right_x1, sphoutflow_ox1);
-  bvals_mhd_fun(pDomain, left_x2,  sphoutflow_ix2);
-  bvals_mhd_fun(pDomain, right_x2, sphoutflow_ox2);
-  x1GravAcc = grav_acc;
+  W.V3=0.0;
+  W.d = d0;
+  for (k=ks; k<=ke; k++) {
+   for (j=js; j<=je; j++) {
+     for (i=is; i<=ie; i++) {
+ 	r= pGrid->px1v[i];
+	if (r>0.1){ //avoid singularities
+	    W.P=d0/r;
+	}
+     }
+   }
+  }
   for (k=ks; k<=ke; k++) {
     for (j=js; j<=je; j++) {
       for (i=is; i<=ie; i++) {
@@ -68,23 +76,39 @@ void problem(DomainS *pDomain)
 	theta = pGrid->px2v[j]; 
 	phi = pGrid->px3[k];
   	//Axissymmetric initial condition that satisfies hydrostatic equilibrium
-	h2=(2*q-3)*(pow(a,2)-pow(r-w0,2));     //h squared, see GGN 1986 Eq.2.13
-  	/*W.V3 = omega0*pow(w0/r,q);//rotational velocity (in phi direction)
-  	W.d = pow(pow(omega,2)/(2*(n+1)),n)*pow(h2-pow(r*cos(theta),2),n);
-	W.P = pow(pow(omega,2)/(2*(n+1)),n+1)*pow(h2-pow(r*cos(theta),2),n+1);*/
-	W.V3=1.0;
-	W.d=3.0;
-	W.P=2.0;
+  	//W.V3 = omega0*pow(r,1-q); // velocity (in phi direction)
+	v3 = omega0*pow(r,1-q);
+	//W.V3 = v3;
+	args = G*M/((n+1)*w0*A)*(w0/r-0.5*pow(w0/(r*sin(theta)),2)-0.5/d);
+	if (args>0){//Keeping only real solutions
+	    //Inside the disk?
+	    printf("(r,theta,phi): %2f,%2f,%2f \n",r,theta,phi);
+	    printf("v3: %2f \n",v3); 
+	    rho= pow(args,1.5);
+	    printf("rho: %2f \n",rho);
+            p  =A*pow(rho,gm);
+            printf("p : %2f \n",p);
+	    W.V3 = v3;
+	    W.d = rho;
+	    W.P = p;
+	}
+	W.V3 = 1.0;
+	W.d = 1.0;
+	W.P = 1.0;
  	U = Prim_to_Cons(&W); //Convert to vector of conservatives
         pGrid->U[k][j][i].d  = vf*U.d;
         pGrid->U[k][j][i].M1 = 0.0;// momentum_r 0 since initial vr =0
         pGrid->U[k][j][i].M2 = 0.0;// p_theta =0 
         pGrid->U[k][j][i].M3 = vf*U.M3;
         pGrid->U[k][j][i].E  = vf*U.E;
-  
       }
     }
   }
+  bvals_mhd_fun(pDomain, left_x1,  sphoutflow_ix1);
+  bvals_mhd_fun(pDomain, right_x1, sphoutflow_ox1);
+  bvals_mhd_fun(pDomain, left_x2,  sphoutflow_ix2);
+  bvals_mhd_fun(pDomain, right_x2, sphoutflow_ox2);
+  x1GravAcc = grav_acc;
 }
 
 /*==============================================================================
@@ -128,7 +152,7 @@ void Userwork_after_loop(MeshS *pM)
 
 
 Real grav_acc(const Real x1, const Real x2, const Real x3) {
-  return -ptmass*g/SQR(x1-rg);
+  return -G*M/SQR(x1-rg);
 }
 
 /*  Boundary Condtions, outflowing, ix1, ox1, ix2, ox2  */

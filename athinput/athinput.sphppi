@@ -2,7 +2,7 @@
 problem = Stone and Pringle (2001) MHD torus problem.
 author  = K. Tomida
 journal = Stone and Pringle, 2001, MNRAS
-config  = --with-coord=spherical --with-gas=hydro --with-problem=sphtorus --with-integrator=vl --with-order=2p --with-flux=hllc
+config  = --with-coord=spherical --with-gas=hydro --with-problem=sphppi --with-integrator=vl --with-order=2p --with-flux=hllc
 
 <job>
 problem_id   = torus    # problem ID: basename of output filenames
@@ -23,6 +23,7 @@ nlim            = 500000   # cycle limit
 tlim            = 100.0     # time limit
 
 <domain1>
+
 level           = 0        # refinement level this Domain (root=0)
 Nx1             = 128       # Number of zones in X1-direction
 x1min           = 0.2      # minimum value of X1
@@ -47,11 +48,11 @@ NGrid_x2        = 1
 NGrid_x3        = 1
 
 <problem>
-gamma = 1.666666667         # gamma = C_p/C_v
+gamma = 1.66666666666667    # Cp/Cv
 n    = 1.5 		    # Compressibility (n=1.5 for adiabatic)
 q    = 2		    #angular momentum distribution
-a    = 5.0		    #minor radius of torus
-w0   = 	30.0 		    #distance to density max			
+w0   = 1.0 		    #distance to density max			
 omega0= 20.0		    #constant of proportionailty for v_phi distribution
-p    = 29.0		    #pressure (placeholder for now)
-d    = 43.0 		    #density (placeholder for now)
+d0   = 43.0 		    #density (placeholder for now)
+d    = 1.125   		    #distortion  factor
+rg   = 0.0                  # gravitational radius
