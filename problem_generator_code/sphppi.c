@@ -54,33 +54,24 @@ void problem(DomainS *pDomain)
   A =pow((d-1)/(2*d),n)/(n+1); //Choose rho_max = 1
   //Checking Constants
   printf("G,M,gm,n,q,w0,omega0,d,d0, A:\n  %2f,%2f,%2f,%2f,%2f,%2f,%2f,%2f,%2f,%2f",G,M,gm,n,q,w0,omega0,d,d0, A);
-  //Ambient Conditions
-  W.V1=0.0;
-  W.V2=0.0;
-  W.V3=0.0;
-  W.d = d0;
-  for (k=ks; k<=ke; k++) {
-   for (j=js; j<=je; j++) {
-     for (i=is; i<=ie; i++) {
- 	r= pGrid->px1v[i];
-	if (r>0.1){ //avoid singularities
-	    W.P=d0/r;
-	}
-     }
-   }
-  }
   for (k=ks; k<=ke; k++) {
     for (j=js; j<=je; j++) {
       for (i=is; i<=ie; i++) {
 	r= pGrid->px1v[i];
 	theta = pGrid->px2v[j]; 
 	phi = pGrid->px3[k];
+        // set default values for ambient gas
+        W.d = d0;
+        W.V1=0.0;
+        W.V2=0.0;
+        W.V3=0.0;
+        W.P=d0/r;
   	//Axissymmetric initial condition that satisfies hydrostatic equilibrium
   	//W.V3 = omega0*pow(r,1-q); // velocity (in phi direction)
 	v3 = omega0*pow(r,1-q);
 	//W.V3 = v3;
 	args = G*M/((n+1)*w0*A)*(w0/r-0.5*pow(w0/(r*sin(theta)),2)-0.5/d);
-	if (args>0){//Keeping only real solutions
+	if (args>1e-5){//Keeping only real solutions
 	    //Inside the disk?
 	    printf("(r,theta,phi): %2f,%2f,%2f \n",r,theta,phi);
 	    printf("v3: %2f \n",v3); 
@@ -92,9 +83,9 @@ void problem(DomainS *pDomain)
 	    W.d = rho;
 	    W.P = p;
 	}
-	W.V3 = 1.0;
+	/*W.V3 = 1.0;
 	W.d = 1.0;
-	W.P = 1.0;
+	W.P = 1.0;*/
  	U = Prim_to_Cons(&W); //Convert to vector of conservatives
         pGrid->U[k][j][i].d  = vf*U.d;
         pGrid->U[k][j][i].M1 = 0.0;// momentum_r 0 since initial vr =0
