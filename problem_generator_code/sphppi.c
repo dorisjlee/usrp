@@ -61,11 +61,18 @@ void problem(DomainS *pDomain)
 	theta = pGrid->px2v[j]; 
 	phi = pGrid->px3[k];
         // set default values for ambient gas
-        W.d = d0;
+        //W.d = 46.0;//0.0001;
         W.V1=0.0;
         W.V2=0.0;
         W.V3=0.0;
-        W.P=d0/r;
+        //W.P=46.0/r;//0.0001/r;
+        p = d0/r;//1.0e-4/r;
+	//d = d0;//1.0e-4;
+	printf("d,P: %2f,%2f",d, p);
+	W.d =d0;
+	//W.P =43.0;//okay
+	//W.P =0.0001;//Not Okay
+	W.P = p;
   	//Axissymmetric initial condition that satisfies hydrostatic equilibrium
   	//W.V3 = omega0*pow(r,1-q); // velocity (in phi direction)
 	v3 = omega0*pow(r,1-q);
@@ -73,16 +80,22 @@ void problem(DomainS *pDomain)
 	args = G*M/((n+1)*w0*A)*(w0/r-0.5*pow(w0/(r*sin(theta)),2)-0.5/d);
 	if (args>1e-5){//Keeping only real solutions
 	    //Inside the disk?
-	    printf("(r,theta,phi): %2f,%2f,%2f \n",r,theta,phi);
-	    printf("v3: %2f \n",v3); 
+	    //printf("(r,theta,phi): %2f,%2f,%2f \n",r,theta,phi);
+	    //printf("v3: %2f \n",v3); 
 	    rho= pow(args,1.5);
-	    printf("rho: %2f \n",rho);
+	    //printf("rho: %2f \n",rho);
             p  =A*pow(rho,gm);
-            printf("p : %2f \n",p);
+            //printf("p : %2f \n",p);
 	    W.V3 = v3;
 	    W.d = rho;
 	    W.P = p;
-	}
+	}/*else{
+            W.d = 0.0001;//d0;
+            W.V1=0.0;
+            W.V2=0.0;
+            W.V3=0.0;
+            W.P=0.0001/r;//d0/r;
+	}*/
 	/*W.V3 = 1.0;
 	W.d = 1.0;
 	W.P = 1.0;*/
