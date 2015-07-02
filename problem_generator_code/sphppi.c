@@ -43,7 +43,7 @@ void problem(DomainS *pDomain)
   n  =  par_getd("problem","n");
   q  =  par_getd("problem","q");
   d0 = par_getd("problem","d0");
-  omega0  =  par_getd("problem","omega0");
+  omega0  =  1.0;//par_getd("problem","omega0");
   d= par_getd("problem","d"); 
   gm  = 1.+1./n;
   rg = par_getd("problem","rg");
@@ -66,13 +66,14 @@ void problem(DomainS *pDomain)
         W.V2=0.0;
         W.V3=0.0;
         //W.P=46.0/r;//0.0001/r;
-        p = d0/r;//1.0e-4/r;
+        //p = d0/r;//1.0e-4/r;
 	//d = d0;//1.0e-4;
 	printf("d,P: %2f,%2f",d, p);
 	W.d =d0;
 	//W.P =43.0;//okay
 	//W.P =0.0001;//Not Okay
-	W.P = p;
+	//W.P = p;
+	W.P = d0/r;
   	//Axissymmetric initial condition that satisfies hydrostatic equilibrium
   	//W.V3 = omega0*pow(r,1-q); // velocity (in phi direction)
 	v3 = omega0*pow(r,1-q);
@@ -83,12 +84,15 @@ void problem(DomainS *pDomain)
 	    //printf("(r,theta,phi): %2f,%2f,%2f \n",r,theta,phi);
 	    //printf("v3: %2f \n",v3); 
 	    rho= pow(args,1.5);
-	    //printf("rho: %2f \n",rho);
-            p  =A*pow(rho,gm);
-            //printf("p : %2f \n",p);
-	    W.V3 = v3;
-	    W.d = rho;
-	    W.P = p;
+            if(rho>W.d) {
+   	      //printf("rho: %2f \n",rho);
+              p  =A*pow(rho,gm);
+              //printf("p : %2f \n",p);
+	      W.V3 = v3;
+	      W.d = rho;
+              if(p>W.P)
+	        W.P = p;
+            }
 	}/*else{
             W.d = 0.0001;//d0;
             W.V1=0.0;

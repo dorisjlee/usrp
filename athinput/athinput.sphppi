@@ -18,7 +18,7 @@ out_fmt = vtk              # Binary data dump
 dt      = 1.0              # time increment between outputs
 
 <time>
-cour_no         = 0.4      # The Courant, Friedrichs, & Lewy (CFL) Number
+cour_no         = 0.25      # The Courant, Friedrichs, & Lewy (CFL) Number
 nlim            = 500000   # cycle limit
 tlim            = 100.0     # time limit
 
@@ -48,11 +48,11 @@ NGrid_x2        = 1
 NGrid_x3        = 1
 
 <problem>
-gamma = 1.66666666666667    # Cp/Cv
+gamma = 1.66666666666667    # aadiabatic index Cp/Cv
 n    = 1.5 		    # Compressibility (n=1.5 for adiabatic)
 q    = 2		    #angular momentum distribution
 w0   = 1.0 		    #distance to density max			
 omega0= 20.0		    #constant of proportionailty for v_phi distribution
-d0   = 43.0 		    #density (placeholder for now)
+d0   = 0.01  #43.0          #1.0                  #0.0001		    #density (placeholder for now)
 d    = 1.125   		    #distortion  factor
 rg   = 0.0                  # gravitational radius
