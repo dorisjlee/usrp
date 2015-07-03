@@ -1,0 +1,58 @@
+<comment>
+problem = Stone and Pringle (2001) MHD torus problem.
+author  = K. Tomida
+journal = Stone and Pringle, 2001, MNRAS
+config  = --with-coord=spherical --with-gas=hydro --with-problem=sphppi --with-integrator=vl --with-order=2p --with-flux=hllc
+
+<job>
+problem_id   = Csphppi    # problem ID: basename of output filenames
+maxout       = 2          # Output blocks number from 1 -> maxout
+num_domains  = 1           # number of Domains in Mesh
+
+<output1>
+out_fmt = hst              # History data dump
+dt      = 0.1            # time increment between outputs
+
+<output2>
+out_fmt = vtk              # Binary data dump
+dt      = 1.0              # time increment between outputs
+
+<time>
+cour_no         = 0.25      # The Courant, Friedrichs, & Lewy (CFL) Number
+nlim            = 500000   # cycle limit
+tlim            = 12.23336179     # time limit
+
+<domain1>
+
+level           = 0        # refinement level this Domain (root=0)
+Nx1             = 64       # Number of zones in X1-direction
+x1min           = 0.005      # minimum value of X1
+x1max           = 2.5      # maximum value of X1
+bc_ix1          = 2        # boundary condition flag for inner-I (X1)
+bc_ox1          = 2        # boundary condition flag for outer-I (X1)
+
+Nx2             = 32      # Number of zones in X2-direction
+x2min           = 0.34906585039   # minimum value of X2,  20 degrees
+x2max           = 2.79252680319   # maximum value of X2, 160 degrees
+bc_ix2          = 2        # boundary condition flag for inner-J (X2)
+bc_ox2          = 2        # boundary condition flag for outer-J (X2)
+
+Nx3             = 64     # Number of zones in X3-direction
+x3min           = 0.0      # minimum value of X3
+x3max           = 6.283185307      # maximum value of X3
+bc_ix3          = 4        # boundary condition flag for inner-K (X3)
+bc_ox3          = 4        # boundary condition flag for outer-K (X3)
+
+NGrid_x1        = 1
+NGrid_x2        = 1
+NGrid_x3        = 1
+
+<problem>
+gamma= 1.666666666666667
+n    = 1.5 		    # Compressibility (n=1.5 for adiabatic)
+q    = 2		    #angular momentum distribution
+w0   = 1.0 		    #distance to density max			
+omega0= 20.0		    #constant of proportionailty for v_phi distribution
+d0   = 0.0001  		    #density (placeholder for now)
+d    = 1.125   		    #distortion  factor
+rg   = 0.0                  # gravitational radius

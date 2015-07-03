@@ -68,7 +68,7 @@ void problem(DomainS *pDomain)
         //W.P=46.0/r;//0.0001/r;
         //p = d0/r;//1.0e-4/r;
 	//d = d0;//1.0e-4;
-	printf("d,P: %2f,%2f",d, p);
+	//printf("d,P: %2f,%2f",d, p);
 	W.d =d0;
 	//W.P =43.0;//okay
 	//W.P =0.0001;//Not Okay
@@ -170,6 +170,9 @@ void sphoutflow_ix1(GridS *pG)
   int js = pG->js, je = pG->je;
   int ks = pG->ks, ke = pG->ke;
   int i,j,k;
+#ifdef MHD
+  int ju, ku; /* j-upper, k-upper */
+#endif
   Real pg;
 
   for (k=ks; k<=ke; k++) {
@@ -184,12 +187,46 @@ void sphoutflow_ix1(GridS *pG)
         pG->U[k][j][is-i].M1 = 0.0;
         pG->U[k][j][is-i].M2 = 0.0;
         pG->U[k][j][is-i].M3 = 0.0;
+#ifdef MHD
+        pg = (pG->U[k][j][is-i+1].E-0.5*(SQR(pG->U[k][j][is-i+1].M1)+SQR(pG->U[k][j][is-i+1].M2)+SQR(pG->U[k][j][is-i+1].M3))/pG->U[k][j][is-i+1].d-0.5*(SQR(pG->U[k][j][is-i+1].B1c)+SQR(pG->U[k][j][is-i+1].B2c)+SQR(pG->U[k][j][is-i+1].B3c)))*(gm-1.0);
+#else 
         pg = (pG->U[k][j][is-i+1].E-0.5*(SQR(pG->U[k][j][is-i+1].M1)+SQR(pG->U[k][j][is-i+1].M2)+SQR(pG->U[k][j][is-i+1].M3))/pG->U[k][j][is-i+1].d)*(gm-1.0);
+#endif
         pg+=grav_acc(pG->px1i[is-i+1],pG->px2v[j],pG->px3v[k])*pG->U[k][j][is-i].d*pG->dx1;
         pG->U[k][j][is-i].E=+pg/(gm-1.0)+0.5*SQR(pG->U[k][j][is-i].M1)/pG->U[k][j][is-i].d;
       }
     }
   }
+
+#ifdef MHD
+/* B1i is not set at i=is-nghost */
+  for (k=ks; k<=ke; k++) {
+    for (j=js; j<=je; j++) {
+      for (i=1; i<=nghost-1; i++) {
+        pG->B1i[k][j][is-i] = pG->B1i[k][j][is];
+      }
+    }
+  }
+
+  if (pG->Nx[1] > 1) ju=je+1; else ju=je;
+  for (k=ks; k<=ke; k++) {
+    for (j=js; j<=ju; j++) {
+      for (i=1; i<=nghost; i++) {
+        pG->B2i[k][j][is-i] = pG->B2i[k][j][is];
+      }
+    }
+  }
+
+  if (pG->Nx[2] > 1) ku=ke+1; else ku=ke;
+  for (k=ks; k<=ku; k++) {
+    for (j=js; j<=je; j++) {
+      for (i=1; i<=nghost; i++) {
+        pG->B3i[k][j][is-i] = pG->B3i[k][j][is];
+      }
+    }
+  }
+#endif /* MHD */
+
   return;
 }
 
@@ -200,6 +237,9 @@ void sphoutflow_ox1(GridS *pG)
   int js = pG->js, je = pG->je;
   int ks = pG->ks, ke = pG->ke;
   int i,j,k;
+#ifdef MHD
+  int ju, ku; /* j-upper, k-upper */
+#endif
 
   for (k=ks; k<=ke; k++) {
     for (j=js; j<=je; j++) {
@@ -214,6 +254,35 @@ void sphoutflow_ox1(GridS *pG)
     }
   }
 
+#ifdef MHD
+/* i=ie+1 is not a boundary condition for the interface field B1i */
+  for (k=ks; k<=ke; k++) {
+    for (j=js; j<=je; j++) {
+      for (i=2; i<=nghost; i++) {
+        pG->B1i[k][j][ie+i] = pG->B1i[k][j][ie];
+      }
+    }
+  }
+
+  if (pG->Nx[1] > 1) ju=je+1; else ju=je;
+  for (k=ks; k<=ke; k++) {
+    for (j=js; j<=ju; j++) {
+      for (i=1; i<=nghost; i++) {
+        pG->B2i[k][j][ie+i] = pG->B2i[k][j][ie];
+      }
+    }
+  }
+
+  if (pG->Nx[2] > 1) ku=ke+1; else ku=ke;
+  for (k=ks; k<=ku; k++) {
+    for (j=js; j<=je; j++) {
+      for (i=1; i<=nghost; i++) {
+        pG->B3i[k][j][ie+i] = pG->B3i[k][j][ie];
+      }
+    }
+  }
+#endif /* MHD */
+
   return;
 }
 
@@ -224,6 +293,9 @@ void sphoutflow_ix2(GridS *pG)
   int js = pG->js;
   int ks = pG->ks, ke = pG->ke;
   int i,j,k;
+#ifdef MHD
+  int ku; /* k-upper */
+#endif
 
   for (k=ks; k<=ke; k++) {
     for (j=1; j<=nghost; j++) {
@@ -238,6 +310,35 @@ void sphoutflow_ix2(GridS *pG)
     }
   }
 
+#ifdef MHD
+/* B1i is not set at i=is-nghost */
+  for (k=ks; k<=ke; k++) {
+    for (j=1; j<=nghost; j++) {
+      for (i=is-(nghost-1); i<=ie+nghost; i++) {
+        pG->B1i[k][js-j][i] = pG->B1i[k][js][i];
+      }
+    }
+  }
+
+/* B2i is not set at j=js-nghost */
+  for (k=ks; k<=ke; k++) {
+    for (j=1; j<=nghost-1; j++) {
+      for (i=is-nghost; i<=ie+nghost; i++) {
+        pG->B2i[k][js-j][i] = pG->B2i[k][js][i];
+      }
+    }
+  }
+
+  if (pG->Nx[2] > 1) ku=ke+1; else ku=ke;
+  for (k=ks; k<=ku; k++) {
+    for (j=1; j<=nghost; j++) {
+      for (i=is-nghost; i<=ie+nghost; i++) {
+        pG->B3i[k][js-j][i] = pG->B3i[k][js][i];
+      }
+    }
+  }
+#endif /* MHD */
+
   return;
 }
 
@@ -248,6 +349,9 @@ void sphoutflow_ox2(GridS *pG)
   int je = pG->je;
   int ks = pG->ks, ke = pG->ke;
   int i,j,k;
+#ifdef MHD
+  int ku; /* k-upper */
+#endif
 
   for (k=ks; k<=ke; k++) {
     for (j=1; j<=nghost; j++) {
@@ -261,7 +365,38 @@ void sphoutflow_ox2(GridS *pG)
       }
     }
   }
+
+#ifdef MHD
+/* B1i is not set at i=is-nghost */
+  for (k=ks; k<=ke; k++) {
+    for (j=1; j<=nghost; j++) {
+      for (i=is-(nghost-1); i<=ie+nghost; i++) {
+        pG->B1i[k][je+j][i] = pG->B1i[k][je][i];
+      }
+    }
+  }
+
+/* j=je+1 is not a boundary condition for the interface field B2i */
+  for (k=ks; k<=ke; k++) {
+    for (j=2; j<=nghost; j++) {
+      for (i=is-nghost; i<=ie+nghost; i++) {
+        pG->B2i[k][je+j][i] = pG->B2i[k][je][i];
+      }
+    }
+  }
+
+  if (pG->Nx[2] > 1) ku=ke+1; else ku=ke;
+  for (k=ks; k<=ku; k++) {
+    for (j=1; j<=nghost; j++) {
+      for (i=is-nghost; i<=ie+nghost; i++) {
+        pG->B3i[k][je+j][i] = pG->B3i[k][je][i];
+      }
+    }
+  }
+#endif /* MHD */
+
   return;
 }
+
 
 
