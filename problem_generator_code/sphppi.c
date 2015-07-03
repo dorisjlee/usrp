@@ -59,7 +59,7 @@ void problem(DomainS *pDomain)
       for (i=is; i<=ie; i++) {
 	r= pGrid->px1v[i];
 	theta = pGrid->px2v[j]; 
-	phi = pGrid->px3[k];
+	phi = pGrid->px3v[k];
         // set default values for ambient gas
         //W.d = 46.0;//0.0001;
         W.V1=0.0;

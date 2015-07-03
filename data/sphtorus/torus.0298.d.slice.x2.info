@@ -1,0 +1,11 @@
+coordinate            = SPHERICAL
+variable              = d
+id                    = d
+direction of slice    = 2
+total number of cells = 128 x 8
+local number of cells = 128 x 8
+range of domain 1     = [0.2 : 2.5]
+range of domain 2     = [0 : 6.28319]
+range of grid 1       = [0.2 : 2.5]
+range of grid 2       = [0 : 6.28319]
+time                  = 93.6205
