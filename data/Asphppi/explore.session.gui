@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<Object name="VisIt">
+    <Field name="Version" type="string">2.9.0</Field>
+    <Object name="GUI">
+        <Object name="FileServerList">
+            <Field name="path" type="string">/Users/dorislee/Desktop/charon/usrp/data/Asphppi</Field>
+            <Field name="filter" type="string">*</Field>
+            <Field name="useCurrentDir" type="bool">true</Field>
+            <Field name="automaticFileGrouping" type="bool">true</Field>
+            <Field name="smartFileGrouping" type="bool">true</Field>
+            <Field name="showDotFiles" type="bool">false</Field>
+            <Object name="recentpaths">
+                <Field name="edison.nersc.gov" type="stringVector">"/global/u2/d/dorislee" "/global/u2/d" "/global/u2/d/dorislee/astro250" </Field>
+                <Field name="localhost" type="stringVector">"/Users/dorislee" "/Users/dorislee/.visit" "/Users/dorislee/.visit/hosts" "/Users" "/Users/dorislee/Applications" "/u/dorislee/usrp" "/u/dorislee" "/u/dorislee/Programs" "/u/dorislee/Programs/athena-sph" "/u/dorislee/usrp/data" "/u/dorislee/usrp/data/Asphppi" "/Users/dorislee/Desktop" "/Users/dorislee/Desktop/charon" "/Users/dorislee/Desktop/charon/old.ssh.20150609120245.1760" "/Users/dorislee/Desktop/charon/usrp" "/Users/dorislee/Desktop/charon/usrp/data" "/Users/dorislee/Desktop/charon/usrp/data/Asphppi" </Field>
+            </Object>
+        </Object>
+        <Object name="AppearanceAttributes">
+            <Field name="useSystemDefault" type="bool">true</Field>
+            <Field name="background" type="string">#c0c0c0</Field>
+            <Field name="foreground" type="string">#000000</Field>
+            <Field name="fontName" type="string">Helvetica,12,-1,5,50,0,0,0,0,0</Field>
+            <Field name="style" type="string">motif</Field>
+            <Field name="orientation" type="int">0</Field>
+            <Field name="defaultForeground" type="string">#000000</Field>
+            <Field name="defaultBackground" type="string">#efebe7</Field>
+            <Field name="defaultFontName" type="string">"Sans Serif,9,-1,5,50,0,0,0,0,0"</Field>
+            <Field name="defaultStyle" type="string">cleanlooks</Field>
+            <Field name="defaultOrientation" type="int">0</Field>
+        </Object>
+        <Field name="postWhenShown" type="bool">false</Field>
+        <Object name="File open">
+            <Field name="x" type="int">394</Field>
+            <Field name="y" type="int">139</Field>
+            <Field name="width" type="int">640</Field>
+            <Field name="height" type="int">479</Field>
+            <Field name="visible" type="bool">false</Field>
+        </Object>
+        <Object name="Information">
+            <Field name="x" type="int">2</Field>
+            <Field name="y" type="int">23</Field>
+            <Field name="width" type="int">483</Field>
+            <Field name="height" type="int">296</Field>
+            <Field name="visible" type="bool">false</Field>
+        </Object>
+        <Object name="MainWin">
+            <Field name="x" type="int">0</Field>
+            <Field name="y" type="int">3</Field>
+            <Field name="width" type="int">393</Field>
+            <Field name="height" type="int">715</Field>
+            <Field name="SPLITTER_VALUES_V2" type="floatVector">0 1 </Field>
+        </Object>
+        <Object name="Volume plot attributes">
+            <Field name="x" type="int">2</Field>
+            <Field name="y" type="int">44</Field>
+            <Field name="width" type="int">737</Field>
+            <Field name="height" type="int">641</Field>
+            <Field name="visible" type="bool">false</Field>
+            <Field name="posted" type="bool">false</Field>
+        </Object>
+        <Object name="Slice operator attributes">
+            <Field name="x" type="int">0</Field>
+            <Field name="y" type="int">20</Field>
+            <Field name="width" type="int">358</Field>
+            <Field name="height" type="int">418</Field>
+            <Field name="visible" type="bool">false</Field>
+            <Field name="posted" type="bool">false</Field>
+        </Object>
+        <Object name="ThreeSlice operator attributes">
+            <Field name="x" type="int">0</Field>
+            <Field name="y" type="int">20</Field>
+            <Field name="width" type="int">358</Field>
+            <Field name="height" type="int">199</Field>
+            <Field name="visible" type="bool">false</Field>
+            <Field name="posted" type="bool">false</Field>
+        </Object>
+        <Object name="Transform operator attributes">
+            <Field name="x" type="int">2</Field>
+            <Field name="y" type="int">44</Field>
+            <Field name="width" type="int">427</Field>
+            <Field name="height" type="int">411</Field>
+            <Field name="visible" type="bool">false</Field>
+            <Field name="posted" type="bool">false</Field>
+        </Object>
+        <Field name="plotDatabases" type="stringVector">"localhost:/Users/dorislee/Desktop/charon/usrp/data/Asphppi/Asphppi.*.vtk database" </Field>
+        <Object name="TimeFormat">
+            <Field name="displayMode" type="string">Cycles</Field>
+            <Field name="precision" type="int">5</Field>
+        </Object>
+        <Field name="showSelectedFiles" type="bool">false</Field>
+        <Field name="allowFileSelectionChange" type="bool">true</Field>
+        <Field name="enableWarningMessagePopups" type="bool">true</Field>
+    </Object>
+</Object>
