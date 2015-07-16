@@ -3,4 +3,8 @@ when you do omp parallel you need to declare which variable is private (ie. diff
 #pragma omp parallel for private (x,sum) reduce(+:sum) this reduces every copy of "sum" by summing (+) it using the reduce operation.
 for (i=0;i<N;i++){
  	.......
-} 
+}
+
+python way of getting 
+AthenaData() in side ath_read.py 
+returns a dictionary of  the data 
