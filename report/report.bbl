@@ -1,0 +1,64 @@
+\begin{thebibliography}{7}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+\expandafter\ifx\csname bibnamefont\endcsname\relax
+  \def\bibnamefont#1{#1}\fi
+\expandafter\ifx\csname bibfnamefont\endcsname\relax
+  \def\bibfnamefont#1{#1}\fi
+\expandafter\ifx\csname citenamefont\endcsname\relax
+  \def\citenamefont#1{#1}\fi
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\texttt{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+\providecommand{\bibinfo}[2]{#2}
+\providecommand{\eprint}[2][]{\url{#2}}
+
+\bibitem[{\citenamefont{{Goldreich} et~al.}(1986)\citenamefont{{Goldreich},
+  {Goodman}, and {Narayan}}}]{Goldreich:1986A}
+\bibinfo{author}{\bibfnamefont{P.}~\bibnamefont{{Goldreich}}},
+  \bibinfo{author}{\bibfnamefont{J.}~\bibnamefont{{Goodman}}},
+  \bibnamefont{and}
+  \bibinfo{author}{\bibfnamefont{R.}~\bibnamefont{{Narayan}}},
+  \bibinfo{journal}{\mnras} \textbf{\bibinfo{volume}{221}},
+  \bibinfo{pages}{339} (\bibinfo{year}{1986}).
+
+\bibitem[{\citenamefont{{Papaloizou} and {Pringle}}(1984)}]{Papaloizou:1984A}
+\bibinfo{author}{\bibfnamefont{J.~C.~B.} \bibnamefont{{Papaloizou}}}
+  \bibnamefont{and} \bibinfo{author}{\bibfnamefont{J.~E.}
+  \bibnamefont{{Pringle}}}, \bibinfo{journal}{\mnras}
+  \textbf{\bibinfo{volume}{208}}, \bibinfo{pages}{721} (\bibinfo{year}{1984}).
+
+\bibitem[{\citenamefont{{Balbus} and {Hawley}}(1991)}]{Balbus:1991A}
+\bibinfo{author}{\bibfnamefont{S.~A.} \bibnamefont{{Balbus}}} \bibnamefont{and}
+  \bibinfo{author}{\bibfnamefont{J.~F.} \bibnamefont{{Hawley}}},
+  \bibinfo{journal}{\apj} \textbf{\bibinfo{volume}{376}}, \bibinfo{pages}{214}
+  (\bibinfo{year}{1991}).
+
+\bibitem[{\citenamefont{{Hawley}}(1991)}]{Hawley:1991A}
+\bibinfo{author}{\bibfnamefont{J.~F.} \bibnamefont{{Hawley}}},
+  \bibinfo{journal}{\apj} \textbf{\bibinfo{volume}{381}}, \bibinfo{pages}{496}
+  (\bibinfo{year}{1991}).
+
+\bibitem[{\citenamefont{{Blaes}}(1987)}]{Blaes:1987A}
+\bibinfo{author}{\bibfnamefont{O.~M.} \bibnamefont{{Blaes}}},
+  \bibinfo{journal}{\mnras} \textbf{\bibinfo{volume}{227}},
+  \bibinfo{pages}{975} (\bibinfo{year}{1987}).
+
+\bibitem[{\citenamefont{{Narayan} and {Goodman}}(1989)}]{Narayan:1989A}
+\bibinfo{author}{\bibfnamefont{R.}~\bibnamefont{{Narayan}}} \bibnamefont{and}
+  \bibinfo{author}{\bibfnamefont{J.}~\bibnamefont{{Goodman}}}, in
+  \emph{\bibinfo{booktitle}{NATO Advanced Science Institutes (ASI) Series C}},
+  edited by \bibinfo{editor}{\bibfnamefont{F.}~\bibnamefont{{Meyer}}}
+  (\bibinfo{year}{1989}), vol. \bibinfo{volume}{290} of
+  \emph{\bibinfo{series}{NATO Advanced Science Institutes (ASI) Series C}}, p.
+  \bibinfo{pages}{231}.
+
+\bibitem[{\citenamefont{{Narayan} et~al.}(1987)\citenamefont{{Narayan},
+  {Goldreich}, and {Goodman}}}]{Narayan:1987A}
+\bibinfo{author}{\bibfnamefont{R.}~\bibnamefont{{Narayan}}},
+  \bibinfo{author}{\bibfnamefont{P.}~\bibnamefont{{Goldreich}}},
+  \bibnamefont{and}
+  \bibinfo{author}{\bibfnamefont{J.}~\bibnamefont{{Goodman}}},
+  \bibinfo{journal}{\mnras} \textbf{\bibinfo{volume}{228}}, \bibinfo{pages}{1}
+  (\bibinfo{year}{1987}).
+
+\end{thebibliography}
