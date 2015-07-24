@@ -4,9 +4,7 @@
  *
  * PURPOSE: Problem generator for the torus problem (Stone et al. 1999)
 /*============================================================================*/
-// Primary header
-#include "../fluid/fluid.hpp"
-#include "../field/field.hpp"
+
 // C++ headers
 #include <iostream>   // endl
 #include <cmath>      // sqrt
@@ -104,12 +102,12 @@ Real magr(MeshBlock *pmb,   int i,   int j,   int k)
   r = pco->x1f(i);
   t = pco->x2f(j);
   p = pco->x3f(k);
-  s=2.0*SQR(r)*sin(t)*sin(0.5*t)*pco->dx3v(k);
-  d=pco->dx3v(k)/(Real)ND;
+  s=2.0*SQR(r)*sin(t)*sin(0.5*t)*pco->dx3f(k);
+  d=pco->dx3f(k)/(Real)ND;
   rd=r*d;
-  a=0.5*(A3(r,t+pco->dx2v(j),p)+A3(r,t+pco->dx2v(j),p+pco->dx3v(k)))*rd*sin(t+pco->dx2v(j))-0.5*(A3(r,t,p)+A3(r,t,p+pco->dx3v(k)))*rd*sin(t);
+  a=0.5*(A3(r,t+pco->dx2f(j),p)+A3(r,t+pco->dx2f(j),p+pco->dx3f(k)))*rd*sin(t+pco->dx2f(j))-0.5*(A3(r,t,p)+A3(r,t,p+pco->dx3f(k)))*rd*sin(t);
   for(n=1;n<ND;n++)
-    a+=A3(r,t+pco->dx2v(i),p+((Real)n)*d)*rd*sin(t+pco->dx2v(j))-A3(r,t,p+((Real)n)*d)*rd*sin(t);
+    a+=A3(r,t+pco->dx2f(i),p+((Real)n)*d)*rd*sin(t+pco->dx2f(j))-A3(r,t,p+((Real)n)*d)*rd*sin(t);
   cout << "Br: "<<a/s << endl;
   return a/s;
 }
@@ -122,12 +120,12 @@ Real magt(MeshBlock *pmb, int i, int j, int k)
   r = pco->x1f(i);
   t = pco->x2f(j);
   p = pco->x3f(k);
-  s=r*pco->dx1v(i)*sin(t)*pco->dx3v(k);
-  d=pco->dx3v(k)/(Real)ND;
+  s=r*pco->dx1f(i)*sin(t)*pco->dx3f(k);
+  d=pco->dx3f(k)/(Real)ND;
   rd=sin(t)*d;
-  a=0.5*(A3(r+pco->dx1v(i),t,p)+A3(r+pco->dx1v(i),t,p+pco->dx3v(k)))*rd*(r+pco->dx1v(i))-0.5*(A3(r,t,p)+A3(r,t,p+pco->dx3v(k)))*rd*r;
+  a=0.5*(A3(r+pco->dx1f(i),t,p)+A3(r+pco->dx1f(i),t,p+pco->dx3f(k)))*rd*(r+pco->dx1f(i))-0.5*(A3(r,t,p)+A3(r,t,p+pco->dx3f(k)))*rd*r;
   for(n=1;n<ND;n++)
-    a+=A3(r+pco->dx1v(i),t,p+((Real)n)*d)*rd*(r+pco->dx1v(i))-A3(r,t,p+((Real)n)*d)*rd*r;
+    a+=A3(r+pco->dx1f(i),t,p+((Real)n)*d)*rd*(r+pco->dx1f(i))-A3(r,t,p+((Real)n)*d)*rd*r;
   cout << "Bt: "<< -a/s << endl;
   return -a/s;
 }
@@ -148,8 +146,8 @@ void Mesh::ProblemGenerator(Fluid *pfl, Field *pfd, ParameterInput *pin)
   int k, ks = pmb->ks, ke = pmb->ke;
   int ii,jj,ftorus;
   // Real en, cprime, w0, rg, dist, acons, d0, amp,beta,divbmax,idb,jdb,kdb;
-  Real divbmax,idb,jdb,kdb;
   Real ld, lm, lv, vv, rp, rm, tp, tm, tv, rv, vt, pp,eq29,dens,wt;
+
   AthenaArray<Real> pr;
   std::srand(pmb->gid);       
 
@@ -169,11 +167,6 @@ void Mesh::ProblemGenerator(Fluid *pfl, Field *pfd, ParameterInput *pin)
   cprime = 0.5/dist;
   en = 1.0/(gmgas-1.0);
   acons=0.5*(dist-1.0)/dist/(en+1.0);
-
-  divbmax=0.0;
-  idb=is;
-  jdb=js;
-  kdb=ks;
 
   /* assign boundary conditions and gravitational force function*/
   pmb->pbval->EnrollFluidBoundaryFunction(inner_x1, stbv_iib);
@@ -212,8 +205,8 @@ void Mesh::ProblemGenerator(Fluid *pfl, Field *pfd, ParameterInput *pin)
           tm=pco->x2f(j)+pco->dx2f(j)*0.1*jj;
           tv=0.5*(tp+tm)+(1.0-0.5*(tp-tm)/tan(0.5*(tp-tm)))/tan(0.5*(tp+tm));
           for(ii=0;ii<10;ii++) {
-            rp = pco->x1f(i)+pco->dx1v(i)*0.1*(ii+1);
-            rm = pco->x1f(i)+pco->dx1v(i)*0.1*ii;
+            rp = pco->x1f(i)+pco->dx1f(i)*0.1*(ii+1);
+            rm = pco->x1f(i)+pco->dx1f(i)*0.1*ii;
             rv= ((SQR(SQR(rp))-SQR(SQR(rm)))/4.0)/((CUBE(rp)-CUBE(rm))/3.0);
             lv= 1.0/3.0*(CUBE(rp)-CUBE(rm))*(cos(tm)-cos(tp));
             vt+=lv;
@@ -264,7 +257,7 @@ void Mesh::ProblemGenerator(Fluid *pfl, Field *pfd, ParameterInput *pin)
     for (k=ks; k<=ke+1; k++) {
       for (j=js; j<=je; j++) {
         for (i=is; i<=ie; i++) {
-          pfd->b.x3f(,k,j,i) = 0.0;
+          pfd->b.x3f(k,j,i) = 0.0;
         }
       }
     }
@@ -280,7 +273,7 @@ void Mesh::ProblemGenerator(Fluid *pfl, Field *pfd, ParameterInput *pin)
                             +  (pco->x1v(i)-pco->x2f(i))*pfd->b.x1f(k,j,i+1))/pco->dx1f(i);
           pfl->u(IB2,k,j,i) = ((pco->x2f(j+1)-pco->x2v(j))*pfd->b.x2f(k,j,i)
                             +  (pco->x2v(j)-pco->x2f(j))*pfd->b.x2f(k,j+1,i))/pco->dx2f(j);
-          pfl->u(IB3,k,j,i) = (pfd->b.x3f(k,j,i) + pfd->b.x2f(k+1,j,i))*0.5;
+          pfl->u(IB3,k,j,i) = (pfd->b.x3f(k,j,i) + pfd->b.x3f(k+1,j,i))*0.5;
           pfl->u(IEN,k,j,i) += 0.5*(SQR(pfl->u(IB1,k,j,i))+SQR(pfl->u(IB2,k,j,i))+SQR(pfl->u(IB3,k,j,i)));
         }
       }
