@@ -61,81 +61,81 @@ inline Real MAX(Real x, Real y){
   return (x>y?x:y);
 }
 
-  Real A1(Real x1, Real x2,Real x3)
-  {
-    return 0.0;
-  }
+Real A1(Real x1, Real x2,Real x3)
+{
+  return 0.0;
+}
 
-  Real A2(Real x1, Real x2,Real x3) 
-  {
-    return 0.0;
-  }
+Real A2(Real x1, Real x2,Real x3) 
+{
+  return 0.0;
+}
 
-  Real A3(Real x1, Real x2,Real x3)
-  {
-    // Real ptmass=1.0,w,a=0.0,eq29,dens,g=1.0,w0=1.0,cprime,en,acons,dist;
-    //cout << "x1,x2,x3: "<<x1<<","<<x2<<","<<x3 << endl;
-    Real eq29,w;
-    Real a,g=1.0;
-    Real dens;
-    cprime = 0.5/dist;
-    en = 1.0/(gmgas-1.0);
-    acons=0.5*(dist-1.0)/dist/(en+1.0);
-    w=x1*sin(x2);
-    eq29 = (g*ptmass)/(w0*(en + 1.))*(w0/x1-0.5*SQR(w0/w) - cprime);
-    //cout << "eq29: "<<eq29 << endl;
-    if (eq29 > 0.0) {
-      dens  = pow(eq29/acons,en);
-      if (dens > 100.0*d0)
+Real A3(Real x1, Real x2,Real x3)
+{
+  // Real ptmass=1.0,w,a=0.0,eq29,dens,g=1.0,w0=1.0,cprime,en,acons,dist;
+  //cout << "x1,x2,x3: "<<x1<<","<<x2<<","<<x3 << endl;
+  Real eq29,w;
+  Real a,g=1.0;
+  Real dens;
+  cprime = 0.5/dist;
+  en = 1.0/(gmgas-1.0);
+  acons=0.5*(dist-1.0)/dist/(en+1.0);
+  w=x1*sin(x2);
+  eq29 = (g*ptmass)/(w0*(en + 1.))*(w0/x1-0.5*SQR(w0/w) - cprime);
+  //cout << "eq29: "<<eq29 << endl;
+  if (eq29 > 0.0) {
+    dens  = pow(eq29/acons,en);
+    if (dens > 100.0*d0)
 	//cout<< "Inside torus dens: "<<dens<<endl;
-        a = SQR(dens)/(beta);
-    }
-    //cout << "A3: "<<a << endl;
-    return a;
+      a = SQR(dens)/(beta);
   }
+  //cout << "A3: "<<a << endl;
+  return a;
+}
 
-  #define ND 100
+#define ND 100
 
-  Real magr(MeshBlock *pmb,   int i,   int j,   int k)
-  {
-    Real r,t,p,s,a,d,rd;
-    Coordinates *pco = pmb->pcoord;
-    int n;
-    r = pco->x1f(i);
-    t = pco->x2f(j);
-    p = pco->x3f(k);
-    s=2.0*SQR(r)*sin(t)*sin(0.5*t)*pco->dx3v(k);
-    d=pco->dx3v(k)/(Real)ND;
-    rd=r*d;
-    a=0.5*(A3(r,t+pco->dx2v(j),p)+A3(r,t+pco->dx2v(j),p+pco->dx3v(k)))*rd*sin(t+pco->dx2v(j))-0.5*(A3(r,t,p)+A3(r,t,p+pco->dx3v(k)))*rd*sin(t);
-    for(n=1;n<ND;n++)
-      a+=A3(r,t+pco->dx2v(i),p+((Real)n)*d)*rd*sin(t+pco->dx2v(j))-A3(r,t,p+((Real)n)*d)*rd*sin(t);
-    cout << "Br: "<<a/s << endl;
-    return a/s;
-  }
+Real magr(MeshBlock *pmb,   int i,   int j,   int k)
+{
+  Real r,t,p,s,a,d,rd;
+  Coordinates *pco = pmb->pcoord;
+  int n;
+  r = pco->x1f(i);
+  t = pco->x2f(j);
+  p = pco->x3f(k);
+  s=2.0*SQR(r)*sin(t)*sin(0.5*t)*pco->dx3v(k);
+  d=pco->dx3v(k)/(Real)ND;
+  rd=r*d;
+  a=0.5*(A3(r,t+pco->dx2v(j),p)+A3(r,t+pco->dx2v(j),p+pco->dx3v(k)))*rd*sin(t+pco->dx2v(j))-0.5*(A3(r,t,p)+A3(r,t,p+pco->dx3v(k)))*rd*sin(t);
+  for(n=1;n<ND;n++)
+    a+=A3(r,t+pco->dx2v(i),p+((Real)n)*d)*rd*sin(t+pco->dx2v(j))-A3(r,t,p+((Real)n)*d)*rd*sin(t);
+  cout << "Br: "<<a/s << endl;
+  return a/s;
+}
 
-  Real magt(MeshBlock *pmb, int i, int j, int k)
-  {
-    Coordinates *pco = pmb->pcoord;
-    Real r,t,p,s,a,d,rd;
-    int n;
-    r = pco->x1f(i);
-    t = pco->x2f(j);
-    p = pco->x3f(k);
-    s=r*pco->dx1v(i)*sin(t)*pco->dx3v(k);
-    d=pco->dx3v(k)/(Real)ND;
-    rd=sin(t)*d;
-    a=0.5*(A3(r+pco->dx1v(i),t,p)+A3(r+pco->dx1v(i),t,p+pco->dx3v(k)))*rd*(r+pco->dx1v(i))-0.5*(A3(r,t,p)+A3(r,t,p+pco->dx3v(k)))*rd*r;
-    for(n=1;n<ND;n++)
-      a+=A3(r+pco->dx1v(i),t,p+((Real)n)*d)*rd*(r+pco->dx1v(i))-A3(r,t,p+((Real)n)*d)*rd*r;
-    cout << "Bt: "<< -a/s << endl;
-    return -a/s;
-  }
+Real magt(MeshBlock *pmb, int i, int j, int k)
+{
+  Coordinates *pco = pmb->pcoord;
+  Real r,t,p,s,a,d,rd;
+  int n;
+  r = pco->x1f(i);
+  t = pco->x2f(j);
+  p = pco->x3f(k);
+  s=r*pco->dx1v(i)*sin(t)*pco->dx3v(k);
+  d=pco->dx3v(k)/(Real)ND;
+  rd=sin(t)*d;
+  a=0.5*(A3(r+pco->dx1v(i),t,p)+A3(r+pco->dx1v(i),t,p+pco->dx3v(k)))*rd*(r+pco->dx1v(i))-0.5*(A3(r,t,p)+A3(r,t,p+pco->dx3v(k)))*rd*r;
+  for(n=1;n<ND;n++)
+    a+=A3(r+pco->dx1v(i),t,p+((Real)n)*d)*rd*(r+pco->dx1v(i))-A3(r,t,p+((Real)n)*d)*rd*r;
+  cout << "Bt: "<< -a/s << endl;
+  return -a/s;
+}
 
-  Real magp(MeshBlock *pmb, int i, int j, int k)
-  {
-    return 0.0;
-  }
+Real magp(MeshBlock *pmb, int i, int j, int k)
+{
+  return 0.0;
+}
 
 //problem generator
 void Mesh::ProblemGenerator(Fluid *pfl, Field *pfd, ParameterInput *pin)
@@ -234,8 +234,7 @@ void Mesh::ProblemGenerator(Fluid *pfl, Field *pfd, ParameterInput *pin)
               ld+=d0*lv;
           }
         }
-        if(ftorus==1)
-        {
+        if(ftorus==1) {
           vv= 1.0/3.0*(CUBE(pco->x1f(i+1))-CUBE(pco->x1f(i)))*(cos(pco->x2f(j))-cos(pco->x2f(j+1)));
           ld/=vv; lm/=vv;
           pfl->u(IDN,k,j,i) = ld;
@@ -243,29 +242,30 @@ void Mesh::ProblemGenerator(Fluid *pfl, Field *pfd, ParameterInput *pin)
 	  //cout << "ld torus: "<<ld <<endl;
           pr(k,j,i)=MAX(acons*pow(ld,gmgas),d0/pco->x1v(i))*(1+amp*((double)rand()/(double)RAND_MAX-0.5));
         }
-        //pfl->u(IEN,k,j,i)=pr(k,j,i)*en+0.5*SQR(pfl->u(IM3,k,j,i))/pfl->u(IDN,k,j,i);
       }
     }
   }
 
-  for (k=ks; k<=ke; k++) {
-    for (j=js; j<=je; j++) {
-      for (i=is; i<=ie+1; i++) {
-          pfl->u(IB1,k,j,i)  = magr(pmb,i,j,k);
+  if (MAGNETIC_FIELDS_ENABLED) {
+    for (k=ks; k<=ke; k++) {
+      for (j=js; j<=je; j++) {
+        for (i=is; i<=ie+1; i++) {
+          pfd->b.x1f(k,j,i)  = magr(pmb,i,j,k);
+        }
       }
     }
-  }
-  for (k=ks; k<=ke; k++) {
-    for (j=js; j<=je+1; j++) {
-      for (i=is; i<=ie; i++) {
-        pfl->u(IB2,k,j,i)  = magt(pmb,i,j,k);
+    for (k=ks; k<=ke; k++) {
+      for (j=js; j<=je+1; j++) {
+        for (i=is; i<=ie; i++) {
+          pfd->b.x2f(k,j,i)  = magt(pmb,i,j,k);
+        }
       }
     }
-  }
-  for (k=ks; k<=ke+1; k++) {
-    for (j=js; j<=je; j++) {
-      for (i=is; i<=ie; i++) {
-        pfl->u(IB3,k,j,i) = 0.0;
+    for (k=ks; k<=ke+1; k++) {
+      for (j=js; j<=je; j++) {
+        for (i=is; i<=ie; i++) {
+          pfd->b.x3f(,k,j,i) = 0.0;
+        }
       }
     }
   }
@@ -275,11 +275,14 @@ void Mesh::ProblemGenerator(Fluid *pfl, Field *pfd, ParameterInput *pin)
       for (i=is; i<=ie; i++) {
         pfl->u(IEN,k,j,i)=pr(k,j,i)*en+0.5*SQR(pfl->u(IM3,k,j,i))/pfl->u(IDN,k,j,i);
         // //Adding the magnetic energy contributions onto the internal energy 
-        pfl->u(IB1,k,j,i) = ((pco->x1f(i+1)-pco->x1v(i))*pfl->u(IB1,k,j,i) + (pco->x1v(i)-pco->x2f(i))*pfl->u(IB1,k,j,i+1))/pco->dx1v(i);
-        pfl->u(IB2,k,j,i) = ((pco->x2f(j+1)-pco->x2v(j))*pfl->u(IB2,k,j,i) + (pco->x2v(j)-pco->x2f(j))*pfl->u(IB2,k,j+1,i))/pco->dx2v(j);
-        pfl->u(IB3,k,j,i) = (pfl->u(IB3,k,j,i) + pfl->u(IB3,k+1,j,i))*0.5;
-        pfl->u(IEN,k,j,i) += 0.5*(SQR(pfl->u(IB1,k,j,i))+SQR(pfl->u(IB2,k,j,i))+SQR(pfl->u(IB3,k,j,i)));
-        //not too sure about this one 
+        if (MAGNETIC_FIELDS_ENABLED) {
+          pfl->u(IB1,k,j,i) = ((pco->x1f(i+1)-pco->x1v(i))*pfd->b.x1f(k,j,i)
+                            +  (pco->x1v(i)-pco->x2f(i))*pfd->b.x1f(k,j,i+1))/pco->dx1f(i);
+          pfl->u(IB2,k,j,i) = ((pco->x2f(j+1)-pco->x2v(j))*pfd->b.x2f(k,j,i)
+                            +  (pco->x2v(j)-pco->x2f(j))*pfd->b.x2f(k,j+1,i))/pco->dx2f(j);
+          pfl->u(IB3,k,j,i) = (pfd->b.x3f(k,j,i) + pfd->b.x2f(k+1,j,i))*0.5;
+          pfl->u(IEN,k,j,i) += 0.5*(SQR(pfl->u(IB1,k,j,i))+SQR(pfl->u(IB2,k,j,i))+SQR(pfl->u(IB3,k,j,i)));
+        }
       }
     }
   }
