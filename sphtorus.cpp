@@ -39,17 +39,17 @@ void stbv_oib(MeshBlock *pmb, AthenaArray<Real> &a,
 void stbv_ojb(MeshBlock *pmb, AthenaArray<Real> &a,
               int is, int ie, int js, int je, int ks, int ke); //sets BCs on outer-x2 (top edge) of grid.
 
-  Real A1(  Real x1,   Real x2,   Real x3);
-  Real A2(  Real x1,   Real x2,   Real x3);
-  Real A3(  Real x1,   Real x2,   Real x3);
-  Real magr(MeshBlock *pmb,   int i,   int j,   int k);
-  Real magt(MeshBlock *pmb,   int i,   int j,   int k);
-  Real magp(MeshBlock *pmb,   int i,   int j,   int k);
-  Real en, cprime, w0=1.0, rg, dist, acons, d0, amp,beta,ptmass=1.0;
-  static Real gm,gmgas;
-  int i, is ;
-  int j, js ;
-  int k, ks ;
+Real A1(  Real x1,   Real x2,   Real x3);
+Real A2(  Real x1,   Real x2,   Real x3);
+Real A3(  Real x1,   Real x2,   Real x3);
+Real magr(MeshBlock *pmb,   int i,   int j,   int k);
+Real magt(MeshBlock *pmb,   int i,   int j,   int k);
+Real magp(MeshBlock *pmb,   int i,   int j,   int k);
+Real en, cprime, w0=1.0, rg, dist, acons, d0, amp,beta,ptmass=1.0;
+static Real gm,gmgas;
+int i, is ;
+int j, js ;
+int k, ks ;
 
 inline Real CUBE(Real x){
   return ((x)*(x)*(x));
@@ -71,14 +71,9 @@ Real A2(Real x1, Real x2,Real x3)
 
 Real A3(Real x1, Real x2,Real x3)
 {
-  // Real ptmass=1.0,w,a=0.0,eq29,dens,g=1.0,w0=1.0,cprime,en,acons,dist;
-  //cout << "x1,x2,x3: "<<x1<<","<<x2<<","<<x3 << endl;
   Real eq29,w;
   Real a,g=1.0;
   Real dens;
-  cprime = 0.5/dist;
-  en = 1.0/(gmgas-1.0);
-  acons=0.5*(dist-1.0)/dist/(en+1.0);
   w=x1*sin(x2);
   eq29 = (g*ptmass)/(w0*(en + 1.))*(w0/x1-0.5*SQR(w0/w) - cprime);
   //cout << "eq29: "<<eq29 << endl;
@@ -145,7 +140,7 @@ void Mesh::ProblemGenerator(Fluid *pfl, Field *pfd, ParameterInput *pin)
   int j, js = pmb->js, je = pmb->je;
   int k, ks = pmb->ks, ke = pmb->ke;
   int ii,jj,ftorus;
-  // Real en, cprime, w0, rg, dist, acons, d0, amp,beta,divbmax,idb,jdb,kdb;
+  // Real en, cprime, w0, rg, dist, acons, d0, amp,beta
   Real ld, lm, lv, vv, rp, rm, tp, tm, tv, rv, vt, pp,eq29,dens,wt;
 
   AthenaArray<Real> pr;
