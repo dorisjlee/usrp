@@ -86,6 +86,46 @@ Real A3(Real x1, Real x2,Real x3)
 
 #define ND 100
 
+/*Real magr(MeshBlock *pmb,   int i,   int j,   int k)
+{
+  Real r,t,p,s,a,d,rd;
+  Coordinates *pco = pmb->pcoord;
+  int n;
+  r = pco->x1f(i);
+  t = pco->x2f(j);
+  p = pco->x3f(k);
+  s=2.0*SQR(r)*sin(t+0.5*pco->dx2f(j))*sin(0.5*pco->dx2f(j))*pco->dx3f(k);
+ // s=2.0*SQR(r)*sin(t)*sin(0.5*pco->dx2f(j))*pco->dx3f(k);
+  d=pco->dx3f(k)/(Real)ND;
+  rd=r*d;
+  a=0.5*(A3(r,t+pco->dx2f(j),p)+A3(r,t+pco->dx2f(j),p+pco->dx3f(k)))*rd*sin(t+pco->dx2f(j))-0.5*(A3(r,t,p)+A3(r,t,p+pco->dx3f(k)))*rd*sin(t);
+  for(n=1;n<ND;n++)
+    a+=A3(r,t+pco->dx2f(j),p+((Real)n)*d)*rd*sin(t+pco->dx2f(j))-A3(r,t,p+((Real)n)*d)*rd*sin(t);
+//  cout << "Br: "<<a/s << endl;
+  return a/s;
+}*/
+
+/*Real magt(MeshBlock *pmb, int i, int j, int k)
+{
+  Coordinates *pco = pmb->pcoord;
+  Real r,t,p,s,a,d,rd;
+  int n;
+  r = pco->x1f(i);
+  t = pco->x2f(j);
+  p = pco->x3f(k);
+  s=(r+0.5*pco->dx1f(i))*pco->dx1f(i)*sin(t)*pco->dx3f(k);
+  //What's the difference between pG->px1[i] and pG->px1i[i]?
+ // s=pG->px1[i]*pG->dx1*sin(t)*pG->dx3;
+ // s = r*pco->dx1f(i)*sin(t)*pco->dx3f(k);
+  d=pco->dx3f(k)/(Real)ND;
+  rd=sin(t)*d;
+  a=0.5*(A3(r+pco->dx1f(i),t,p)+A3(r+pco->dx1f(i),t,p+pco->dx3f(k)))*rd*(r+pco->dx1f(i))-0.5*(A3(r,t,p)+A3(r,t,p+pco->dx3f(k)))*rd*r;
+  for(n=1;n<ND;n++)
+    a+=A3(r+pco->dx1f(i),t,p+((Real)n)*d)*rd*(r+pco->dx1f(i))-A3(r,t,p+((Real)n)*d)*rd*r;
+//  cout << "Bt: "<< -a/s << endl;
+  return -a/s;
+}*/
+
 Real magr(MeshBlock *pmb,   int i,   int j,   int k)
 {
   Real r,t,p,s,a,d,rd;
@@ -95,12 +135,7 @@ Real magr(MeshBlock *pmb,   int i,   int j,   int k)
   t = pco->x2f(j);
   p = pco->x3f(k);
   s=2.0*SQR(r)*sin(t+0.5*pco->dx2f(j))*sin(0.5*pco->dx2f(j))*pco->dx3f(k);
-  d=pco->dx3f(k)/(Real)ND;
-  rd=r*d;
-  a=0.5*(A3(r,t+pco->dx2f(j),p)+A3(r,t+pco->dx2f(j),p+pco->dx3f(k)))*rd*sin(t+pco->dx2f(j))-0.5*(A3(r,t,p)+A3(r,t,p+pco->dx3f(k)))*rd*sin(t);
-  for(n=1;n<ND;n++)
-    a+=A3(r,t+pco->dx2f(j),p+((Real)n)*d)*rd*sin(t+pco->dx2f(j))-A3(r,t,p+((Real)n)*d)*rd*sin(t);
-//  cout << "Br: "<<a/s << endl;
+  a=(A3(r,t+pco->dx2f(j),p+0.5*pco->dx3f(k))*sin(t+pco->dx2f(j))-A3(r,t,p+0.5*pco->dx3f(k))*sin(t))*r*pco->dx3f(k);
   return a/s;
 }
 
@@ -113,14 +148,11 @@ Real magt(MeshBlock *pmb, int i, int j, int k)
   t = pco->x2f(j);
   p = pco->x3f(k);
   s=(r+0.5*pco->dx1f(i))*pco->dx1f(i)*sin(t)*pco->dx3f(k);
-  d=pco->dx3f(k)/(Real)ND;
-  rd=sin(t)*d;
-  a=0.5*(A3(r+pco->dx1f(i),t,p)+A3(r+pco->dx1f(i),t,p+pco->dx3f(k)))*rd*(r+pco->dx1f(i))-0.5*(A3(r,t,p)+A3(r,t,p+pco->dx3f(k)))*rd*r;
-  for(n=1;n<ND;n++)
-    a+=A3(r+pco->dx1f(i),t,p+((Real)n)*d)*rd*(r+pco->dx1f(i))-A3(r,t,p+((Real)n)*d)*rd*r;
-//  cout << "Bt: "<< -a/s << endl;
+  a=(A3(r+pco->dx1f(i),t,p+0.5*pco->dx3f(k))*(r+pco->dx1f(i))-A3(r,t,p+0.5*pco->dx3f(k))*r)*sin(t)*pco->dx3f(k);
   return -a/s;
 }
+
+
 
 Real magp(MeshBlock *pmb, int i, int j, int k)
 {
