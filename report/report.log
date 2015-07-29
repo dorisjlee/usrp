@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  21 JUL 2015 16:35
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  29 JUL 2015 09:09
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -428,17 +428,28 @@ Package pdftex.def Info: plots/randinit1percent.pdf used on input line 128.
 Package natbib Warning: Citation `Hawley:1990A' on page 3 undefined on input li
 ne 132.
 
-(./report.bbl [3]
+[3]
 
-LaTeX Warning: A float is stuck (cannot be placed) on input line 24.
+LaTeX Warning: A float is stuck (cannot be placed) on input line 150.
 
 
-LaTeX Warning: A float is stuck (cannot be placed) on input line 24.
+LaTeX Warning: A float is stuck (cannot be placed) on input line 150.
 
 
 Class revtex4 Warning: Deferred float stuck during \clearpage processing.
 
-)
+! Undefined control sequence.
+<recently read> \Nabla 
+                       
+l.152 ...red magnetic fields to ensure the $\Nabla
+                                                   \cdot \vec{B}=0$ conditio...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+(./report.bbl)
 
 Package natbib Warning: There were undefined citations.
 
@@ -453,10 +464,10 @@ LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right .
 
  ) 
 Here is how much of TeX's memory you used:
- 5125 strings out of 493117
- 67050 string characters out of 6135433
- 158156 words of memory out of 5000000
- 8475 multiletter control sequences out of 15000+600000
+ 5126 strings out of 493117
+ 67053 string characters out of 6135433
+ 159156 words of memory out of 5000000
+ 8476 multiletter control sequences out of 15000+600000
  14052 words of font info for 58 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  39i,9n,28p,1100b,333s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -484,7 +495,7 @@ onts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2014/texmf-dist/fo
 nts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/texlive/2014/texmf-dist/font
 s/type1/public/amsfonts/cm/cmti9.pfb></usr/local/texlive/2014/texmf-dist/fonts/
 type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on report.pdf (4 pages, 331727 bytes).
+Output written on report.pdf (4 pages, 335642 bytes).
 PDF statistics:
  234 PDF objects out of 1000 (max. 8388607)
  99 compressed objects within 1 object stream

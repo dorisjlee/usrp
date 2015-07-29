@@ -136,7 +136,7 @@ Table~\ref{mode_growth} summarizes the mode growth comparison with \cite{Hawley:
 \centering
     \begin{tabular}{|l|l|l|}
     \hline
-    ~   & Random Initializa tion & Eigenmode Initialization \\ \hline
+    ~   & Random Initialization & Eigenmode Initialization \\ \hline
     m=1 & 0.8679\quad0.855      & 0.2667\quad0.2621        \\
     m=2 & 0.4701\quad0.211      & 0.5505\quad0.5100        \\
     m=3 & 0.3756\quad0.254      & 0.6828\quad0.6820        \\ \hline
@@ -144,6 +144,25 @@ Table~\ref{mode_growth} summarizes the mode growth comparison with \cite{Hawley:
     \caption{Left-flushed values are the mode growth in Run J, M respectively; right-flushed values are mode growth in \cite{Hawley:1991A}.}
     \label{mode_growth}
 \end{table}
+\section{Magnetorotational Instability}
+
+  \subsection{Numerical Methods}
+	\subsubsection{Initial Conditions}
+	To initialize an azimuthal field, we make use of the three degrees of freedom to set a convenient gauge that enables us to define $A_r = A_\phi$ = 0 and $A_\phi = \frac{\rho^2}{\beta_0}$. 
+	We define initial conditions using the magnetic scalar potential at cell-corners and then compute $B(r,\theta)$ by $\Nabla \times A$, rather than directly defining the initial condition using the face-centered magnetic fields to ensure the $\Nabla \cdot \vec{B}=0$ condition is satisfied in the discretized form. Rather than computing the curl using the differential form from the polar coordinate, we instead :
+\begin{equation}
+\int \vec{B} \cdot d\vec{S}  = \int A\cdot dl
+\end{equation}
+	
+	\par $\beta_0$ is a user-defined value for the plasma beta describing the ratio of gas-to-magnetic pressure. To maintain the initial hydrostatic equilibrium of the torus, we need to chose a $\beta$ such that the initial azimuthal magnetic field is weak.
+Additionally, $\beta$ also determines the scale height of the ---- system.
+
+	
+In the case of \ac{PPI}, there is a strict condition on the rotational velocity profile of constant angular momentum. This is not necessary for \ac{MRI} to take place , in fact a Keplerian disk is okay. 
+	
+\acknowledgments
+\section*{Acknowledgments}
+This research used resources of the National Energy Research Scientific Computing Center, a DOE Office of Science User Facility supported by the Office of Science of the U.S. Department of Energy under Contract No. DE-AC02-05CH11231.
 \bibliography{bibdatabase}
 \end{document}
 
