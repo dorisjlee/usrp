@@ -67,9 +67,15 @@ The gas density outside the torus ($d_0$) is chosen to be $10^{-4}$ and an ambie
 \par Global instabilities such as the \ac{PPI} investigated here are often strongly dependent on the choice of boundary condition. Here we adopt the periodic boundary condition in the $\phi$ direction and outflow boundary condition in the outer radial boundary. Inner boundary condition was harder to chose since it can strongly affect the torus during stages of its nonlinear evolution as the torus spirals in towards the inner boundary. The selection of the $R_0/R_B$ parameter on the inner boundary of the mesh isolates the central singularity and avoids regions of high gravitational potential as the high infall velocities limits the timesteps determined by the \ac{CFL} condition. 
 \par We tested out four combinations of the inner boundary condition by either setting outflowing $V_R$ or $V_R$=0 and either a corotating boundary or $V_\theta$=$V_\phi$=0. The boundary conditions in Run B,D,E restricted the gas from spiraling inwards at later timesteps and results in high velocities that caused the simulation to terminate. Since excess free energy from shearing can drive other types of fluid instabilities, in order to distinctly observe \ac{PPI} we need to enforce the corotating boundary condition, so that the ghost zone moves with the boundary cells in the active computational domain.  Along with setting the outflow radial velocity as zero as the gas hits the inner boundary, the resulting simulation alleviated the high velocities previously observed at the boundaries. 
 \subsection{Numerical Results}
+\begin{figure}
+\includegraphics[width=0.45\textwidth]{plots/t32_orbit.png}
+\caption{Z-slice of a 3D simulation of the torus showing spiral waves at the nonlinear regime (t=32 orbits). }
+\label{t32_orbit}
+\end{figure}
 \subsubsection{Effects of Distortion Parameter}
 \par In Run F,G, we tried using two different distortion parameters that determines the shape of the torus. The value of d=1.1773 is derived from the $r_{in}$ and $r_{out}$ in the A2 slender torus model in \cite{Hawley:1991A}. For qualitative comparison, undistorted torus is smaller with a nearly-circular cross section as d$\rightarrow$1. We find that the behavior of the two runs showed similar evolution, however, all the sequence of events in Run F occurred earlier in Run G than in Run F.
 %One possible explanation is that 
+
 \subsubsection{Effects of Logarithmic Gridding}
 \par  Increasing the radial dynamic range using logarithmic gridding puts more gas into the computational domain so that the ambient conditions remains realistic for a longer period of time after the instability begins the drive the gas outside of the computational domain. Along with the proper boundary conditions as discussed in Sec~\ref{sec:BC}, we no longer observe low density gas below the $10^{-6}$ density floor. We attempted at different multiplicative factors of logarithmic gridding in Run H, I, J and found that a factor of 1.03 is sufficient for covering the large radial domain. In Run I and J, the large logarithmic factor results in very fine grids near the inner boundary. Since there is high infall velocities due to the pseudo-Newtonian potential, the CFL condition strongly limits the timesteps of the simulation. In the future, \ac{SMR} could be used to increase the resolution near the torus mid-plane region.
 \begin{table*}[t]
@@ -145,14 +151,17 @@ Table~\ref{mode_growth} summarizes the mode growth comparison with \cite{Hawley:
     \label{mode_growth}
 \end{table}
 \section{Magnetorotational Instability}
-
   \subsection{Numerical Methods}
 	\subsubsection{Initial Conditions}
-	To initialize an azimuthal field, we make use of the three degrees of freedom to set a convenient gauge that enables us to define $A_r = A_\phi$ = 0 and $A_\phi = \frac{\rho^2}{\beta_0}$. 
-	We define initial conditions using the magnetic scalar potential at cell-corners and then compute $B(r,\theta)$ by $\Nabla \times A$, rather than directly defining the initial condition using the face-centered magnetic fields to ensure the $\Nabla \cdot \vec{B}=0$ condition is satisfied in the discretized form. Rather than computing the curl using the differential form from the polar coordinate, we instead :
+	To initialize an azimuthal field, we make use of the three degrees of freedom to set a convenient gauge that enables us to define $A_r = A_\phi = 0$ and $A_\phi = \frac{\rho^2}{\beta_0}$. We define initial conditions using the magnetic scalar potential at cell-corners and then compute $B(r,\theta)$ by $\nabla \times A$, rather than directly defining the initial condition using the face-centered magnetic fields to ensure the $\nabla \cdot \vec{B}=0$ condition is satisfied in the discretized form. Using Stoke theorem to convert the $\vec{B}$ equation into an integral form,
 \begin{equation}
-\int \vec{B} \cdot d\vec{S}  = \int A\cdot dl
+\int \vec{B} \cdot d\vec{S}  = \int A\cdot dl 
 \end{equation}
+we can get the magnetic field by the simple discrete form:
+\begin{equation}
+\vec{B}=\frac{1}{\Delta S}[A_{\phi,+} l_+ +A_{\phi,-} l_-] .
+\end{equation}
+
 	
 	\par $\beta_0$ is a user-defined value for the plasma beta describing the ratio of gas-to-magnetic pressure. To maintain the initial hydrostatic equilibrium of the torus, we need to chose a $\beta$ such that the initial azimuthal magnetic field is weak.
 Additionally, $\beta$ also determines the scale height of the ---- system.

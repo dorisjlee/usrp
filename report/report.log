@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  29 JUL 2015 09:09
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  29 JUL 2015 12:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -401,53 +401,39 @@ Package pdftex.def Info: plots/profile.pdf used on input line 61.
 (pdftex.def)             Requested size: 230.90128pt x 153.93506pt.
 Package acronym Info: Label `acro:CFL' newly defined as it shall be overridden
 although it is yet undefined on input line 67.
-Package acronym Info: Label `acro:SMR' newly defined as it shall be overridden
-although it is yet undefined on input line 74.
 
-[2 <./plots/profile.pdf>]
-Underfull \hbox (badness 1755) in paragraph at lines 107--109
+<plots/t32_orbit.png, id=21, 675.52374pt x 589.20125pt>
+File: plots/t32_orbit.png Graphic file (type png)
+
+<use plots/t32_orbit.png>
+Package pdftex.def Info: plots/t32_orbit.png used on input line 71.
+(pdftex.def)             Requested size: 230.90128pt x 201.39563pt.
+Package acronym Info: Label `acro:SMR' newly defined as it shall be overridden
+although it is yet undefined on input line 80.
+ [2 <./plots/profile.pdf> <./plots/t32_orbit.png>]
+Underfull \hbox (badness 1755) in paragraph at lines 113--115
 \OT1/cmr/m/n/10 where d is the dis-tor-tion pa-ram-e-ter, we ob-tained
  []
 
 Package acronym Info: Label `acro:FFT' newly defined as it shall be overridden
-although it is yet undefined on input line 115.
-<plots/m1init1E-5.pdf, id=63, 433.62pt x 289.08pt>
+although it is yet undefined on input line 121.
+[3] <plots/m1init1E-5.pdf, id=75, 433.62pt x 289.08pt>
 File: plots/m1init1E-5.pdf Graphic file (type pdf)
- <use plots/m1init1E-5.pdf>
-Package pdftex.def Info: plots/m1init1E-5.pdf used on input line 125.
+
+<use plots/m1init1E-5.pdf>
+Package pdftex.def Info: plots/m1init1E-5.pdf used on input line 131.
 (pdftex.def)             Requested size: 230.90128pt x 153.93506pt.
 
-<plots/randinit1percent.pdf, id=64, 433.62pt x 289.08pt>
+<plots/randinit1percent.pdf, id=76, 433.62pt x 289.08pt>
 File: plots/randinit1percent.pdf Graphic file (type pdf)
 
 <use plots/randinit1percent.pdf>
-Package pdftex.def Info: plots/randinit1percent.pdf used on input line 128.
+Package pdftex.def Info: plots/randinit1percent.pdf used on input line 134.
 (pdftex.def)             Requested size: 230.90128pt x 153.93506pt.
 
 
-Package natbib Warning: Citation `Hawley:1990A' on page 3 undefined on input li
-ne 132.
-
-[3]
-
-LaTeX Warning: A float is stuck (cannot be placed) on input line 150.
-
-
-LaTeX Warning: A float is stuck (cannot be placed) on input line 150.
-
-
-Class revtex4 Warning: Deferred float stuck during \clearpage processing.
-
-! Undefined control sequence.
-<recently read> \Nabla 
-                       
-l.152 ...red magnetic fields to ensure the $\Nabla
-                                                   \cdot \vec{B}=0$ conditio...
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
+Package natbib Warning: Citation `Hawley:1990A' on page 4 undefined on input li
+ne 138.
 
 (./report.bbl)
 
@@ -464,10 +450,10 @@ LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right .
 
  ) 
 Here is how much of TeX's memory you used:
- 5126 strings out of 493117
- 67053 string characters out of 6135433
- 159156 words of memory out of 5000000
- 8476 multiletter control sequences out of 15000+600000
+ 5132 strings out of 493117
+ 67171 string characters out of 6135433
+ 168156 words of memory out of 5000000
+ 8480 multiletter control sequences out of 15000+600000
  14052 words of font info for 58 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  39i,9n,28p,1100b,333s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -495,10 +481,10 @@ onts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2014/texmf-dist/fo
 nts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/texlive/2014/texmf-dist/font
 s/type1/public/amsfonts/cm/cmti9.pfb></usr/local/texlive/2014/texmf-dist/fonts/
 type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on report.pdf (4 pages, 335642 bytes).
+Output written on report.pdf (4 pages, 403272 bytes).
 PDF statistics:
- 234 PDF objects out of 1000 (max. 8388607)
- 99 compressed objects within 1 object stream
+ 237 PDF objects out of 1000 (max. 8388607)
+ 100 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 16 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 21 words of extra memory for PDF output out of 10000 (max. 10000000)
 
