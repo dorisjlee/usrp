@@ -1,4 +1,4 @@
-\begin{thebibliography}{7}
+\begin{thebibliography}{9}
 \expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
 \expandafter\ifx\csname bibnamefont\endcsname\relax
   \def\bibnamefont#1{#1}\fi
@@ -60,5 +60,18 @@
   \bibinfo{author}{\bibfnamefont{J.}~\bibnamefont{{Goodman}}},
   \bibinfo{journal}{\mnras} \textbf{\bibinfo{volume}{228}}, \bibinfo{pages}{1}
   (\bibinfo{year}{1987}).
+
+\bibitem[{\citenamefont{{Hawley}}(1990)}]{Hawley:1990A}
+\bibinfo{author}{\bibfnamefont{J.~F.} \bibnamefont{{Hawley}}},
+  \bibinfo{journal}{\apj} \textbf{\bibinfo{volume}{356}}, \bibinfo{pages}{580}
+  (\bibinfo{year}{1990}).
+
+\bibitem[{\citenamefont{{Jiang} et~al.}(2014)\citenamefont{{Jiang}, {Stone},
+  and {Davis}}}]{Jiang:2014A}
+\bibinfo{author}{\bibfnamefont{Y.-F.} \bibnamefont{{Jiang}}},
+  \bibinfo{author}{\bibfnamefont{J.~M.} \bibnamefont{{Stone}}},
+  \bibnamefont{and} \bibinfo{author}{\bibfnamefont{S.~W.}
+  \bibnamefont{{Davis}}}, \bibinfo{journal}{\apj}
+  \textbf{\bibinfo{volume}{796}}, \bibinfo{pages}{106} (\bibinfo{year}{2014}).
 
 \end{thebibliography}

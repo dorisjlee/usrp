@@ -389,8 +389,6 @@
 \vspace*{-\headsep}\vspace*{\headheight}
 \footnotesize
 {\footnotesize\textsc{\@journalinfo}}\par
-{\scriptsize Preprint typeset using \LaTeX\ style emulateapj v.\
-  \emulapj@ver}\par\vspace*{-\baselineskip}\vspace*{0.625in}
 }%
 \def\frontmatter@title@produce{%
  \begingroup
@@ -869,11 +867,9 @@
 \def\subtitle{
   \vspace*{-12mm}
   \noindent
-  {\scriptsize {\sc \@journalinfo} \\
-        Preprint typeset using \LaTeX\ style emulateapj v.\ \emulapj@ver}
 }
 \let\slugcomment\submitted   % slugcomment == submitted
-\submitted{Draft version \today}
+\submitted{}%Draft version \today}
 \journalinfo{\@submitted}
 
 

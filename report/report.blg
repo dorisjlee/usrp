@@ -7,45 +7,45 @@ Database file #1: bibdatabase.bib
 Warning--I didn't find a database entry for "Papaloizou:1985A"
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
-You've used 7 entries,
+You've used 9 entries,
             3411 wiz_defined-function locations,
-            1205 strings with 11206 characters,
-and the built_in function-call counts, 4498 in all, are:
-= -- 263
-> -- 118
-< -- 22
-+ -- 85
-- -- 29
-* -- 593
-:= -- 501
-add.period$ -- 7
-call.type$ -- 7
-change.case$ -- 28
-chr.to.int$ -- 7
-cite$ -- 7
-duplicate$ -- 426
-empty$ -- 392
-format.name$ -- 82
-if$ -- 850
+            1218 strings with 11524 characters,
+and the built_in function-call counts, 5704 in all, are:
+= -- 335
+> -- 150
+< -- 27
++ -- 109
+- -- 37
+* -- 750
+:= -- 640
+add.period$ -- 9
+call.type$ -- 9
+change.case$ -- 36
+chr.to.int$ -- 9
+cite$ -- 9
+duplicate$ -- 539
+empty$ -- 499
+format.name$ -- 102
+if$ -- 1080
 int.to.chr$ -- 1
-int.to.str$ -- 8
-missing$ -- 68
-newline$ -- 36
-num.names$ -- 22
-pop$ -- 117
+int.to.str$ -- 10
+missing$ -- 86
+newline$ -- 42
+num.names$ -- 28
+pop$ -- 146
 preamble$ -- 1
-purify$ -- 28
+purify$ -- 36
 quote$ -- 0
-skip$ -- 163
+skip$ -- 208
 stack$ -- 0
-substring$ -- 137
-swap$ -- 334
-text.length$ -- 17
+substring$ -- 179
+swap$ -- 419
+text.length$ -- 21
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 42
+type$ -- 54
 warning$ -- 0
-while$ -- 22
+while$ -- 28
 width$ -- 0
-write$ -- 85
+write$ -- 105
 (There was 1 warning)
