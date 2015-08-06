@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  3 AUG 2015 17:24
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  6 AUG 2015 13:59
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -390,13 +390,8 @@ LaTeX Font Info:    Try loading font information for U+rsfs on input line 42.
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/jknapltx/ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
-)
-
-Package natbib Warning: Citation `Papaloizou:1985A' on page 1 undefined on inpu
-t line 42.
-
-[1{/usr/local/texlive/2014/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-<plots/profile.pdf, id=15, 433.62pt x 289.08pt>
+) [1{/usr/local/texlive/2014/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+<plots/profile.pdf, id=14, 433.62pt x 289.08pt>
 File: plots/profile.pdf Graphic file (type pdf)
  <use plots/profile.pdf>
 Package pdftex.def Info: plots/profile.pdf used on input line 64.
@@ -404,7 +399,7 @@ Package pdftex.def Info: plots/profile.pdf used on input line 64.
 Package acronym Info: Label `acro:CFL' newly defined as it shall be overridden
 although it is yet undefined on input line 70.
 
-<plots/t32_orbit.png, id=16, 675.52374pt x 589.20125pt>
+<plots/t32_orbit.png, id=15, 675.52374pt x 589.20125pt>
 File: plots/t32_orbit.png Graphic file (type png)
 
 <use plots/t32_orbit.png>
@@ -412,90 +407,106 @@ Package pdftex.def Info: plots/t32_orbit.png used on input line 74.
 (pdftex.def)             Requested size: 230.90128pt x 201.39563pt.
  [2 <./plots/profile.pdf>]
 
-LaTeX Warning: A float is stuck (cannot be placed) on input line 81.
+LaTeX Warning: A float is stuck (cannot be placed) on input line 82.
 
 
-LaTeX Warning: A float is stuck (cannot be placed) on input line 81.
+LaTeX Warning: A float is stuck (cannot be placed) on input line 82.
 
 
 Class revtex4 Warning: Deferred float stuck during \clearpage processing.
 
 Package acronym Info: Label `acro:SMR' newly defined as it shall be overridden
 although it is yet undefined on input line 83.
+<plots/randinit1percent_smr.pdf, id=64, 433.62pt x 289.08pt>
+File: plots/randinit1percent_smr.pdf Graphic file (type pdf)
 
-LaTeX Warning: Reference `mode_growth_mri' on page 3 undefined on input line 13
-0.
+<use plots/randinit1percent_smr.pdf>
+Package pdftex.def Info: plots/randinit1percent_smr.pdf used on input line 115.
 
+(pdftex.def)             Requested size: 230.90128pt x 153.93506pt.
 
-Package natbib Warning: Citation `Hawley:2011A' on page 3 undefined on input li
-ne 132.
+<plots/mass_accretion_smr.pdf, id=65, 433.62pt x 289.08pt>
+File: plots/mass_accretion_smr.pdf Graphic file (type pdf)
 
-[3 <./plots/t32_orbit.png>]
-Underfull \hbox (badness 1755) in paragraph at lines 141--143
+<use plots/mass_accretion_smr.pdf>
+Package pdftex.def Info: plots/mass_accretion_smr.pdf used on input line 120.
+(pdftex.def)             Requested size: 230.90128pt x 148.59009pt.
+ [3 <./plots/t32_orbit.png> <./plots/randinit1percent_smr.pdf> <./plots/mass_ac
+cretion_smr.pdf>]
+<plots/mri_randinit1percent.pdf, id=133, 433.62pt x 289.08pt>
+File: plots/mri_randinit1percent.pdf Graphic file (type pdf)
+
+<use plots/mri_randinit1percent.pdf>
+Package pdftex.def Info: plots/mri_randinit1percent.pdf used on input line 158.
+
+(pdftex.def)             Requested size: 230.90128pt x 153.93506pt.
+ [4]
+Underfull \hbox (badness 1755) in paragraph at lines 170--172
 \OT1/cmr/m/n/10 where d is the dis-tor-tion pa-ram-e-ter, we ob-tained
  []
 
+<plots/mri_cartoon.pdf, id=141, 794.97pt x 614.295pt>
+File: plots/mri_cartoon.pdf Graphic file (type pdf)
 
-Package natbib Warning: Citation `Balbus:1998A' on page 4 undefined on input li
-ne 149.
-
-
-LaTeX Warning: Reference `mri_diagram' on page 4 undefined on input line 154.
-
+<use plots/mri_cartoon.pdf>
+Package pdftex.def Info: plots/mri_cartoon.pdf used on input line 189.
+(pdftex.def)             Requested size: 230.90128pt x 134.69115pt.
 Package acronym Info: Label `acro:FFT' newly defined as it shall be overridden
-although it is yet undefined on input line 158.
-<plots/m1init1E-5.pdf, id=69, 433.62pt x 289.08pt>
+although it is yet undefined on input line 196.
+ [5 <./plots/mri_randinit1percent.pdf> <./plots/mri_cartoon.pdf
+
+pdfTeX warning: /usr/texbin/pdflatex (file ./plots/mri_cartoon.pdf): PDF inclus
+ion: multiple pdfs with page group included in a single page
+>] <plots/m1init1E-5.pdf, id=224, 433.62pt x 289.08pt>
 File: plots/m1init1E-5.pdf Graphic file (type pdf)
- <use plots/m1init1E-5.pdf>
-Package pdftex.def Info: plots/m1init1E-5.pdf used on input line 168.
+
+<use plots/m1init1E-5.pdf>
+Package pdftex.def Info: plots/m1init1E-5.pdf used on input line 214.
 (pdftex.def)             Requested size: 230.90128pt x 153.93506pt.
 
-<plots/randinit1percent.pdf, id=70, 433.62pt x 289.08pt>
+<plots/randinit1percent.pdf, id=225, 433.62pt x 289.08pt>
 File: plots/randinit1percent.pdf Graphic file (type pdf)
 
 <use plots/randinit1percent.pdf>
-Package pdftex.def Info: plots/randinit1percent.pdf used on input line 171.
+Package pdftex.def Info: plots/randinit1percent.pdf used on input line 217.
 (pdftex.def)             Requested size: 230.90128pt x 153.93506pt.
- [4]
-<plots/mass_accretion.pdf, id=81, 433.62pt x 289.08pt>
+
+<plots/mri_randinit1percent_all_m.pdf, id=226, 433.62pt x 289.08pt>
+File: plots/mri_randinit1percent_all_m.pdf Graphic file (type pdf)
+
+<use plots/mri_randinit1percent_all_m.pdf>
+Package pdftex.def Info: plots/mri_randinit1percent_all_m.pdf used on input lin
+e 238.
+(pdftex.def)             Requested size: 230.90128pt x 153.93506pt.
+
+<plots/mass_accretion.pdf, id=227, 433.62pt x 289.08pt>
 File: plots/mass_accretion.pdf Graphic file (type pdf)
 
 <use plots/mass_accretion.pdf>
-Package pdftex.def Info: plots/mass_accretion.pdf used on input line 195.
+Package pdftex.def Info: plots/mass_accretion.pdf used on input line 249.
 (pdftex.def)             Requested size: 230.90128pt x 153.93506pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-(./report.bbl)
-
-Package natbib Warning: There were undefined citations.
-
-[5 <./plots/m1init1E-5.pdf> <./plots/randinit1percent.pdf
+ [6 <./plots/m1init1E-5.pdf> <./plots/randinit1percent.pdf
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./plots/randinit1percent.pdf): PDF i
 nclusion: multiple pdfs with page group included in a single page
-> <./plots/mass_accretion.pdf
+> <./plots/mri_randinit1percent_all_m.pdf
 
-pdfTeX warning: /usr/texbin/pdflatex (file ./plots/mass_accretion.pdf): PDF inc
-lusion: multiple pdfs with page group included in a single page
->] (./report.aux)
-
-LaTeX Warning: There were undefined references.
-
+pdfTeX warning: /usr/texbin/pdflatex (file ./plots/mri_randinit1percent_all_m.p
+df): PDF inclusion: multiple pdfs with page group included in a single page
+>] (./report.bbl) [7 <./plots/mass_accretion.pdf>] (./report.aux)
 
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right .
 
 
  ) 
 Here is how much of TeX's memory you used:
- 5155 strings out of 493117
- 67553 string characters out of 6135433
- 163172 words of memory out of 5000000
- 8501 multiletter control sequences out of 15000+600000
+ 5196 strings out of 493117
+ 68626 string characters out of 6135433
+ 167667 words of memory out of 5000000
+ 8537 multiletter control sequences out of 15000+600000
  14360 words of font info for 59 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 39i,9n,28p,1571b,311s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 39i,9n,28p,1569b,333s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb><
 /usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></u
@@ -522,10 +533,10 @@ ts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2014/texmf-dist/fonts
 type1/public/amsfonts/cm/cmti8.pfb></usr/local/texlive/2014/texmf-dist/fonts/ty
 pe1/public/amsfonts/cm/cmti9.pfb></usr/local/texlive/2014/texmf-dist/fonts/type
 1/public/amsfonts/cm/cmtt10.pfb>
-Output written on report.pdf (5 pages, 434894 bytes).
+Output written on report.pdf (7 pages, 735106 bytes).
 PDF statistics:
- 281 PDF objects out of 1000 (max. 8388607)
- 113 compressed objects within 2 object streams
+ 504 PDF objects out of 1000 (max. 8388607)
+ 177 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 26 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 51 words of extra memory for PDF output out of 10000 (max. 10000000)
 
